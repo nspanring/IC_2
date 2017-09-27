@@ -1,0 +1,6 @@
+27.09.2017 16:52:42 | --- START ---
+27.09.2017 16:52:42 | Node: 7.4.0
+27.09.2017 16:52:42 | Chrome: 56.0.2924.87
+27.09.2017 16:52:42 | ./class/entity.class.js Load was performed. [success 200]
+27.09.2017 16:52:42 | Electron: 1.6.13
+27.09.2017 16:52:42 |  FAIL | world.js | addScript('./class/2.class.js'): [Triggered ajaxError handler]

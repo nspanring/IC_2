@@ -2,13 +2,20 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
-    <script src="./class/entety.class.js"></script>
+    <title>IC2</title>
+    <!-- above script imports  -->
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    <!--imports etc  -->
+    <script src="./node_modules/jquery/dist/jquery.min.js"></script>
+    <!-- after script imports -->
+    <script>if (window.module) module = window.module;</script>
+
+    <!-- import of the starting script -->
+    <script src="./js/world.js"></script>
   </head>
   <body>
-    <h1>Hello World!</h1>
-    We are using node <script>document.write(process.versions.node)</script>,
-    Chrome <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
+    <h1>IC2</h1>
+    <div class="log">
+    </div>
   </body>
 </html>
