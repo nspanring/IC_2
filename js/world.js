@@ -3,10 +3,14 @@ var ERROR = 1;
 var WARNING = 2;
 var INFO = 3;
 var NOTE = 4;
-var DEBUG_LEVEL = NOTE; // set minimal debug level
+var DEBUG_LEVEL = ERROR; // set minimal debug level
 
 // Start ID
 var world_id = 1;
+var seed = "cybot007";
+
+// used for names and stuff
+var syllables;
 
 $( document ).ready(function() {
   log(NOTE, "--- START ---");
@@ -15,8 +19,25 @@ $( document ).ready(function() {
   log(NOTE, "Electron: "+process.versions.electron );
 
   // include scripts
-  addScript("./class/entity.class.js");
-  addScript("./class/2.class.js"); // test fail
+  syllables = require('./data/syllables.json');
+
+  $.when(
+    addScript("./js/seedrandom.min.js") // first
+  ).then(function(){ // #1
+    Math.random = new Math.seedrandom(seed); // start random seed Math.random()
+    console.log(Math.random());
+
+    $.when(
+      addScript("./class/entity.class.js") // second
+    ).then(function(){ // #2
+      $.when(
+        addScript("./class/human.class.js") // last
+      ).then(function(){ // #3
+        firstHuman = new Human();
+        console.log(firstHuman.name);
+      }); // #3
+    }); // #2
+  }); // #1
 });
 
 /**
