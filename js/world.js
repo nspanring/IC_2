@@ -6,12 +6,12 @@ const NOTE = 4;
 const DEBUG_LEVEL = ERROR; // set minimal debug level
 
 // used for names and stuff
-const syllables;
+var syllables;
 
 // Start ID
 var world_id = 1;
 // seed for random functions
-var seed = "cybot007";
+var seed = "1234";
 
 $( document ).ready(function() {
   log(NOTE, "--- START ---");
@@ -22,31 +22,39 @@ $( document ).ready(function() {
   // include scripts
   syllables = require('./data/syllables.json');
 
-  $.when(
-    addScript("./js/seedrandom.min.js") // first
-  ).then(function(){ // #1
-    Math.random = new Math.seedrandom(seed); // start random seed Math.random()
-    console.log(Math.random());
+  call_array([
+    ["addScript","./js/seedrandom.min.js"],
+    ["addScript","./class/entity.class.js"],
+    ["addScript","./class/human.class.js"]
+  ]);
 
-    $.when(
-      addScript("./class/entity.class.js") // second
-    ).then(function(){ // #2
-      $.when(
-        addScript("./class/human.class.js") // last
-      ).then(function(){ // #3
-        firstHuman = new Human();
-        console.log(firstHuman.name);
-      }); // #3
-    }); // #2
-  }); // #1
 });
 
 /**
- * sync calls Functions listed in an array
- * @param func arraz of callfunctions
+ * Called after everthing is loaded! bzw. after : call_array
  */
-function call_array(func){
-  
+function after_init(){
+  Math.random = new Math.seedrandom(seed); // start random seed Math.random()
+  console.log(Math.random());
+
+  firstHuman = new Human();
+  console.log(firstHuman.name);
+}
+
+/**
+ * sync calls Functions listed in an array can be used only one time!
+ * @param func arraz of callfunctions | call_array([["addScript","./class/entity.class.js"],["addScript","./class/human.class.js"]]);
+ */
+function call_array(func, i = 0){
+  $.when(
+    window[func[i][0]](func[i][1])
+  ).then(function(){
+    if(i < func.length - 1){
+      call_array(func, ++i);
+    }else{
+      after_init(); // call last function
+    }
+  }); // then
 }
 
 /**
