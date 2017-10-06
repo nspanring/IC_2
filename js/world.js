@@ -35,7 +35,7 @@ $( document ).ready(function() {
  */
 function after_init(){
   Math.random = new Math.seedrandom(seed); // start random seed Math.random()
-  console.log(Math.random());
+  console.log(Math.random()); 
 
   firstHuman = new Human();
   console.log(firstHuman.name);
