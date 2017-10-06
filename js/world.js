@@ -1,16 +1,17 @@
 // DEBUG LEVELS
-var ERROR = 1;
-var WARNING = 2;
-var INFO = 3;
-var NOTE = 4;
-var DEBUG_LEVEL = ERROR; // set minimal debug level
+const ERROR = 1;
+const WARNING = 2;
+const INFO = 3;
+const NOTE = 4;
+const DEBUG_LEVEL = ERROR; // set minimal debug level
+
+// used for names and stuff
+const syllables;
 
 // Start ID
 var world_id = 1;
+// seed for random functions
 var seed = "cybot007";
-
-// used for names and stuff
-var syllables;
 
 $( document ).ready(function() {
   log(NOTE, "--- START ---");
@@ -39,6 +40,14 @@ $( document ).ready(function() {
     }); // #2
   }); // #1
 });
+
+/**
+ * sync calls Functions listed in an array
+ * @param func arraz of callfunctions
+ */
+function call_array(func){
+  
+}
 
 /**
  * Dynamically add a script in the running time to the program
@@ -79,14 +88,14 @@ function log(level, content){
  * @return time as String dd.mm.yyyy hh:mm:ss
  */
 Number.prototype.dateTime = function () {
-    var a = new Date(this);
+    var ndate = new Date(this);
     var months = ['01','02','03','04','05','06','07','08','09','10','11','12'];
-    var year = a.getFullYear();
-    var month = months[a.getMonth()];
-    var date = a.getDate(); if(date < 10) date = "0"+date;
-    var hour = a.getHours(); if(hour < 10) hour = "0"+hour;
-    var min = a.getMinutes(); if(min < 10) min = "0"+min;
-    var sec = a.getSeconds(); if(sec < 10) sec = "0"+sec;
+    var year = ndate.getFullYear();
+    var month = months[ndate.getMonth()];
+    var date = ndate.getDate(); if(date < 10) date = "0"+date;
+    var hour = ndate.getHours(); if(hour < 10) hour = "0"+hour;
+    var min = ndate.getMinutes(); if(min < 10) min = "0"+min;
+    var sec = ndate.getSeconds(); if(sec < 10) sec = "0"+sec;
     var time = date + '.' + month + '.' + year + ' ' + hour + ':' + min + ':' + sec ;
     return time;
 }
