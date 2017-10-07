@@ -4,3 +4,4 @@ class Entity {
       this.name = syllables[(Math.floor(Math.random() * 3993) + 1 )]+syllables[(Math.floor(Math.random() * 3993) + 1)];
   }
 }
+exports.Entity = Entity
