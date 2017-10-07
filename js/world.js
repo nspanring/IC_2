@@ -13,8 +13,9 @@ const DEBUG_LEVEL = NOTE // set minimal debug level
 // Start ID
 var world_id = 1
 // seed for random functions
-var seed = "1234"
+var seed = "178293579823"
 
+// Fires when document is loaded
 $( document ).ready(function() {
   log(NOTE, "--- START ---")
   log(NOTE, "Node: "+process.versions.node )
@@ -22,7 +23,6 @@ $( document ).ready(function() {
   log(NOTE, "Electron: "+process.versions.electron )
 
   Math.random = new Math.seedrandom(seed) // start random seed Math.random()
-  console.log(Math.random())
 
   firstHuman = new Human()
   console.log(firstHuman.name)
