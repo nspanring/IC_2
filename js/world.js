@@ -11,9 +11,9 @@ const NOTE = 4
 const DEBUG_LEVEL = ERROR // set minimal debug level
 
 // Start ID
-var world_id = 1
+var world_id = 0
 // seed for random functions
-var seed = "178293579823"
+var seed = "42345623"
 
 // Fires when document is loaded
 $( document ).ready(function() {
@@ -25,8 +25,26 @@ $( document ).ready(function() {
   Math.random = new Math.seedrandom(seed) // start random seed Math.random()
 
   firstHuman = new Human()
-  console.log(firstHuman.name)
+  console.log(firstHuman)
 })
+
+/**
+ * Make a Number from the probabilities
+ * @param probabilities [2.2, 40, 70]
+ * @return int number
+ */
+function getNumber(probabilities){
+    var rnd = Math.random();
+    var total = 0;
+    var hit;
+    for(var i = 0; i < probabilities.length; i++){
+      if(rnd > total && rnd < total + probabilities[i][0]){
+           hit = probabilities[i]
+      }
+      total += probabilities[i][0];
+    }
+    return Number((hit[1] + (Math.random() * (hit[2] - hit[1]))).toFixed(2));
+}
 
 /**
  * sync calls Functions listed in an array can be used only one time!
