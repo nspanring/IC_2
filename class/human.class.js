@@ -1,8 +1,15 @@
 const { Entity } = require('./entity.class.js');
+const { Work } = require('./work.class.js');
 class Human extends Entity {
   constructor(){
     super() // call constructor of Entity
-    this.age = 0;
+    this.age = 0; // multiplikator for health loss
+    this.hunger = 0; // % when < 30% sleeps refreshs energy
+    this.energy = 100; // % regain energy with sleep when hunger is < 30%
+    this.temperature = 37; // 37c damge if below or up
+    this.health = 100 // %
+    this.money = 0 // used to buy food
+    this.food = 0; // kcal durch. 3000
     // gender 1:woman, 2:man
     this.sex = getNumber(
       [
@@ -11,14 +18,14 @@ class Human extends Entity {
         [.49 ,2 ,2],   // 2: man 49%
       ]
     );
-    this.sexOrientation = getNumber(
+    this.sexOrientation = getNumber( // if homo no child can be born
       [
         //chance, min, max
         [.90 ,1 ,1],   // 1: hetero 90%
         [.10 ,2 ,2],   // 2: homo 10%
       ]
     );
-    // Generate the IQ of the Human
+    // Generate the IQ of the Human manipulates work
     this.iq = getNumber(
       [
         //chance, min, max
