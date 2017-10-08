@@ -13,7 +13,7 @@ const DEBUG_LEVEL = ERROR // set minimal debug level
 // Start ID
 var world_id = 0
 // seed for random functions
-var seed = "42345623"
+var seed = "5345345"
 
 // Fires when document is loaded
 $( document ).ready(function() {

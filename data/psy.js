@@ -32,7 +32,7 @@ var number = getNumber(
     [.16  ,110,119],  //  10%  | 110 - 119	hoch	16,1%
     [.067 ,120,129],  //  25%  | 120 - 129	sehr hoch	6,7%
     [.022 ,130,159],  //  50%  | 130 - 159	hochbegabt.	2,2%
-    [.001, 160, 200]  // 100%  | 160 - 200	hochbegabt.	0,001% Extrem begabt
+    [.001 ,160, 200]  // 100%  | 160 - 200	hochbegabt.	0,001% Extrem begabt
   ]
 );
 
@@ -62,35 +62,67 @@ Lebensstil, Geschmack, Führungsstil
 Kommunikationsstrukturen
 Wohn- und Arbeitsbereichumfelder
 
-Etablierte 9%
-Performer 9%
-Konservative 6%
-Postmaterielle 9%
-Buergerliche Mitte 14%
-Adaptiv-Pragmatische 12%
-Digitale Individualisten 8%
-Traditionelle 13%
-Konsumorientierte Basis 9%
-Hedonisten 11%
+1: Etablierte 9%
+2: Performer 9%
+3: Konservative 6%
+4: Postmaterielle 9%
+5: Buergerliche Mitte 14%
+6: Adaptiv-Pragmatische 12%
+7: Digitale Individualisten 8%
+8: Traditionelle 13%
+9: Konsumorientierte Basis 9%
+10: Hedonisten 11%
+
+*/
+var number = getNumber(
+  [
+    //chance, min, max
+    [.09 ,1 ,1],   // 1: Etablierte 9%
+    [.09 ,2 ,2],   // 2: Performer 9%
+    [.06 ,3 ,3],   // 3: Konservative 6%
+    [.09 ,4 ,4],   // 4: Postmaterielle 9%
+    [.14 ,5 ,5],   // 5: Buergerliche Mitte 14%
+    [.12 ,6 ,6],   // 6: Adaptiv-Pragmatische 12%
+    [.08 ,7 ,7],   // 7: Digitale Individualisten 8%
+    [.13 ,8 ,8],   // 8: Traditionelle 13%
+    [.09 ,9 ,9],   // 9: Konsumorientierte Basis 9%
+    [.11 ,10, 10]  // 10: Hedonisten 11%
+  ]
+);
+
+/*
 
 --------------------
 Soziale Lage:
-Oberschicht
-Mitlere Schicht
-Unterschicht
+1 Oberschicht
+2 Mitlere Schicht
+3 Unterschicht
+
+
+Soziale Lage|Grundorientierung -> Sinus-Milieus
+1|2 1: Etablierte 9%
+1|3 2: Performer 9%
+2|1 3: Konservative 6%
+2|2 4: Postmaterielle 9%
+2|2 5: Buergerliche Mitte 14%
+2|3 6: Adaptiv-Pragmatische 12%
+2|3 7: Digitale Individualisten 8%
+3|1 8: Traditionelle 13%
+3|2 9: Konsumorientierte Basis 9%
+3|3 10: Hedonisten 11%
 
 --------------------
 Grundorientierung:
-A: Traditionelle Werte
+1|A: Traditionelle Werte
   Pflichterfuellung
   Ordnung
 
-B: Modernisierung
+2|B: Modernisierung
   Individualisierung
   Selbstverwirklichung
   Genuss
 
-C: Neuorientierung
+3|C: Neuorientierung
   Multi-Optionalitaet
   Pragmatismus
   Refokussierung
@@ -98,8 +130,12 @@ C: Neuorientierung
 
 --------------------
 Vier-Quadranten-Modell
+1|A: Komplexe Arbeit
+2|D: Kreative Arbeit
+3|B: Noramle Arbeit
+4|C: Einfache Arbeit
 
-A:
+A: Komplexe Arbeit
   Faktisch
   Quantitativ
   Kritisch
@@ -107,7 +143,7 @@ A:
   Mathematisch
   Logisch
   Analytisch
-D:
+D: Kreate Arbeit
   Kreativ
   Kuenstlerisch
   Intuitiv
@@ -115,7 +151,7 @@ D:
   Aufbauend
   Simultan
   Raeumlich
-B:
+B: noramle Arbeit
   Konservativ
   Kontrolliert
   Squentiell
@@ -123,7 +159,7 @@ B:
   Dominierend
   Verbal
   Leser
-C:
+C: einfache Arbeit
   Emotional
   Musikalisch
   Spirituell
