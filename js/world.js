@@ -8,7 +8,7 @@ const ERROR = 1
 const WARNING = 2
 const INFO = 3
 const NOTE = 4
-const DEBUG_LEVEL = NOTE // set minimal debug level
+const DEBUG_LEVEL = ERROR // set minimal debug level
 
 // Start ID
 var world_id = 1
