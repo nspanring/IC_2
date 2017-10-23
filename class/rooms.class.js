@@ -6,3 +6,4 @@ class Room extends Entity {
 
   }
 }
+exports.Room = Room

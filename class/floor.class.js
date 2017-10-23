@@ -6,3 +6,4 @@ class Floor extends Entity {
 
   }
 }
+exports.Floor = Floor

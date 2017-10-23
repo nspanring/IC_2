@@ -2,6 +2,7 @@
 require('./js/seedrandom.min.js')
 const syllables = require('./data/syllables.json')
 const { Human } = require('./class/human.class.js')
+const { Building } = require('./class/building.class.js')
 
 // DEBUG LEVELS
 const ERROR = 1
@@ -25,7 +26,9 @@ $( document ).ready(function() {
   Math.random = new Math.seedrandom(seed) // start random seed Math.random()
 
   firstHuman = new Human()
+  firstBuilding = new Building(20,2)
   console.log(firstHuman)
+  console.log(firstBuilding)
 })
 
 /**
