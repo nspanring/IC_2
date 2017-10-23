@@ -4,8 +4,8 @@ class Human extends Entity {
   constructor(){
     super() // call constructor of Entity
     this.age = 0; // multiplikator for health loss
-    this.hunger = 0; // % when < 30% sleeps refreshs energy
-    this.energy = 100; // % regain energy with sleep when hunger is < 30%
+    this.kcal = 3000; // % when > 1000 sleeps refreshs energy
+    this.energy = 100; // % regain energy with sleep when kcal is > 1000
     this.temperature = 37; // 37c damge if below or up
     this.health = 100 // %
     this.money = 0 // used to buy food
@@ -91,6 +91,35 @@ class Human extends Entity {
       case 9: this.sozialLayer = 3; this.baseOrientaion = 2; break;
       case 10: this.sozialLayer = 3; this.baseOrientaion = 3; break;
     }
+  }
+
+  /**
+   * regain Energy but stop working (%)
+   */
+  sleep(){
+    multi = 0;
+    if (this.age > 50) {
+      multi+=1
+      if (this.age > 100) {
+        multi+=1
+      }
+    }
+    if (this.kcal < 1000) {
+      multi+=1
+    }
+    if (this.temperature < 37 || this.temperature > 37) {
+      multi+=1
+    }
+    if (this.health < 50) {
+      multi+=1
+    }
+    // Calc energy regained with the multiplikator (sleep time)
+    this.energy
+
+  }
+
+  calcHealth(){
+
   }
 }
 exports.Human = Human
