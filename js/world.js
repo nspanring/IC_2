@@ -1,5 +1,7 @@
 // Require all classes and data files
 require('./js/lib/seedrandom.min.js')
+var THREE = require('three')
+var OrbitControls = require('three-orbit-controls')(THREE)
 const syllables = require('./data/syllables.json')
 const { Human } = require('./js/class/human.class.js')
 const { Building } = require('./js/class/building.class.js')
@@ -24,6 +26,8 @@ $( document ).ready(function() {
   log(NOTE, "Electron: "+process.versions.electron )
 
   Math.random = new Math.seedrandom(seed) // start random seed Math.random()
+
+  require('./js/animation.js')
 
   firstHuman = new Human()
   firstBuilding = new Building(20,2)
