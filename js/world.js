@@ -1,8 +1,8 @@
 // Require all classes and data files
-require('./js/seedrandom.min.js')
+require('./js/lib/seedrandom.min.js')
 const syllables = require('./data/syllables.json')
-const { Human } = require('./class/human.class.js')
-const { Building } = require('./class/building.class.js')
+const { Human } = require('./js/class/human.class.js')
+const { Building } = require('./js/class/building.class.js')
 
 // DEBUG LEVELS
 const ERROR = 1
