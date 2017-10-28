@@ -11,7 +11,7 @@ class Animation {
 
     this.scene = new THREE.Scene();
     this.scene.add( new THREE.AmbientLight( 0x888888 ) );
-    //scene.add( new THREE.AxisHelper( 20 ) ); // helper
+    // this.scene.add( new THREE.AxisHelper( 100 ) ); // helper
     // controls
 
     this.controls = new OrbitControls( this.camera, this.renderer.domElement );
@@ -64,13 +64,13 @@ class Animation {
     return newgroup;
   }
 
-  addBox(group,x,y,z,width,depth,height,color=0xffffff){
+  addBox(group,x,y,z,width,depth,height,color=0xffffff, opacity=0.5){
     var geometry = new THREE.BoxBufferGeometry( width, height, depth );
-    var wireframe = new THREE.WireframeGeometry( geometry );
+    var wireframe = new THREE.EdgesGeometry( geometry );
     var mat = new THREE.LineBasicMaterial( { color: color, linewidth: 2 } );
     var line = new THREE.LineSegments( wireframe, mat );
     line.material.depthTest = false;
-    line.material.opacity = 0.5;
+    line.material.opacity = opacity;
     line.material.transparent = true;
     line.position.x = x;
     line.position.y = y;
