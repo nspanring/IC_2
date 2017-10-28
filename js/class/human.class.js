@@ -1,3 +1,4 @@
+
 const { Entity } = require('./entity.class.js');
 const { Work } = require('./work.class.js');
 class Human extends Entity {
