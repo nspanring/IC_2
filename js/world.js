@@ -31,9 +31,11 @@ $( document ).ready(function() {
   //AnimationProcess = new Animation()
 
   firstHuman = new Human()
-  firstBuilding = new Building(20,7,0,0)
+  firstBuilding = new Building(20,10,0,0)
   firstBuilding = new Building(20,7,150,0)
-  firstBuilding = new Building(20,7,300,0)
+  firstBuilding = new Building(20,8,300,0)
+  firstBuilding = new Building(20,6,450,0)
+  firstBuilding = new Building(20,4,600,0)
 
   console.log(firstHuman)
   console.log(firstBuilding)
