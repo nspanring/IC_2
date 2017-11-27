@@ -25,7 +25,7 @@ class TrafficManager{
 		var first_street = new Street(1, 1, [crossingtest2, crossingtest3]);
 		var first_street = new Street(1, 1, [crossingtest2, crossingtest4]);
 
-		this.firstVehicle = new Vehicle();
+		this.firstVehicle = new Vehicle(-1,1);
 
 		crossingtest1.use(1);
 		crossingtest1.idle(1);

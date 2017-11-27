@@ -1,9 +1,9 @@
 const { Entity } = require('../entity.class.js');
 class Vehicle extends Entity{
-	constructor(){
+	constructor(grid_x, grid_y){
 		super() // call constructor of Entity
 
-		var position_xy = Animation.grid.getPosition('0,0');
+		var position_xy = Animation.grid.getPosition(grid_x+','+grid_y);
 		this.group = Animation.addGroup()
 		Animation.addMeshBox(this.group,position_xy[0],10,position_xy[1],10,10,10,0xffffff)
 	}

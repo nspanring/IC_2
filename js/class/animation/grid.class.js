@@ -4,6 +4,7 @@
 class Grid {
   constructor(gridsize = 100) {
     this.gridsize = gridsize;
+    this.grid = [];
   }
 
   getGrid(x, y){
@@ -18,6 +19,15 @@ class Grid {
     var x = grid_xy[0] * this.gridsize + (this.gridsize / 2);
     var y = grid_xy[1] * this.gridsize + (this.gridsize / 2);
     return [x,y];
+  }
+
+  addToGrid(obj, x, y){
+    if(this.grid[x] == undefined) this.grid[x] = [];
+    this.grid[x][y] = obj;
+  }
+  removeFromGrid(x, y){
+    if(this.grid[x] == undefined) this.grid[x] = [];
+    this.grid[x][y] = null;
   }
 }
 exports.Grid=Grid

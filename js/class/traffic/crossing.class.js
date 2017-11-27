@@ -20,6 +20,7 @@ class Crossing extends Entity{
 		this.group = Animation.addGroup()
 		this.crossing_ctx = Animation.addBoxWithText(this.group,'↕',this.x,0,this.y,50,50,10,0xFFFFFF)
 
+		Animation.grid.addToGrid(this, this.grid_x, this.grid_y);
 		// tmp grafikal demo
 		this.display();
 	}
