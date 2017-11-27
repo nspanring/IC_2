@@ -3,7 +3,7 @@ require('./js/lib/seedrandom.min.js')
 const syllables = require('./data/syllables.json')
 const THREE = require('three')
 const OrbitControls = require('three-orbit-controls')(THREE)
-var Animation = require('./js/class/animation.class.js').Animation
+var Animation = require('./js/class/animation/animation.class.js').Animation
 
 // DEBUG LEVELS
 const ERROR = 1
@@ -20,8 +20,8 @@ var seed = "5345345"
 // Fires when document is loaded
 $( document ).ready(function() {
   document.body.appendChild( Animation.renderer.domElement );
-  const { Human } = require('./js/class/human.class.js')
-  const { Building } = require('./js/class/building.class.js')
+  const { Human } = require('./js/class/human/human.class.js')
+  const { Building } = require('./js/class/building/building.class.js')
 
   log(NOTE, "--- START ---")
   log(NOTE, "Node: "+process.versions.node )

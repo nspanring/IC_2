@@ -1,4 +1,4 @@
-const { Entity } = require('./entity.class.js');
+const { Entity } = require('../entity.class.js');
 class Room extends Entity {
   constructor(size){
     super() // call constructor of Entity

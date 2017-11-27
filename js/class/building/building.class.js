@@ -1,4 +1,4 @@
-const { Entity } = require('./entity.class.js');
+const { Entity } = require('../entity.class.js');
 const { Floor } = require('./floor.class.js');
 class Building extends Entity {
   constructor(size,floors,x,z){
