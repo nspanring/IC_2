@@ -6,7 +6,6 @@ class Crossing extends Entity{
 		this.x = x;
 		this.y = y;
 
-		this.ID = world_id + 1; world_id++;
 		//[TODO]: (Extra States if implement later): | 2: Up, Left | 3: Up, Right | 4: Left, Up | 5: Left, Down | 6: Right, Up | 7: Right, Down
 		this.state = state; // 0: up, down  | 1: left, right
 		this.in_use = 0;

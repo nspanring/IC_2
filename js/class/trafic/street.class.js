@@ -2,7 +2,6 @@ const { Entity } = require('../entity.class.js');
 class Street extends Entity{
 	constructor(state, lane = 1, connections = undefined){
 
-		this.ID = world_id + 1; world_id++;
 		this.state = state; // 0: left, right | 1: up, down
 		this.lane = lane;
 		this.contacts = []; // max 2 (begin and and of steet can have a connection)
