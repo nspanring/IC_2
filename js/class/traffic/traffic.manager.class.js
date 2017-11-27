@@ -1,5 +1,6 @@
 const { Crossing } = require('./crossing.class.js');
 const { Street } = require('./street.class.js');
+const { Vehicle } = require('./vehicle.class.js');
 class TrafficManager{
 	constructor(){
 		this.test();
@@ -23,6 +24,8 @@ class TrafficManager{
 		var first_street = new Street(1, 1, [crossingtest1, crossingtest2]);
 		var first_street = new Street(1, 1, [crossingtest2, crossingtest3]);
 		var first_street = new Street(1, 1, [crossingtest2, crossingtest4]);
+
+		this.firstVehicle = new Vehicle();
 
 		crossingtest1.use(1);
 		crossingtest1.idle(1);
