@@ -14,7 +14,7 @@ class Building extends Entity {
     //Animation.addBox(this.group,0,floors*40/2-20,0,100,100,40*floors,0)
     this.floor = []
     for (var i = 0; i < floors; i++) {
-      this.floor[i] = new Floor(this.group,i,this.x,this.z, this.size)
+      this.floor[i] = new Floor(this.group,i,this.x,this.y, this.size)
     }
   }
 }
