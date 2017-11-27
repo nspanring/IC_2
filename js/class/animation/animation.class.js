@@ -1,4 +1,5 @@
 var tempThis;
+const { Grid } = require('../animation/grid.class.js');
 class Animation {
   constructor(){
     this.renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -38,6 +39,9 @@ class Animation {
 
     window.addEventListener( 'resize', this.onWindowResize, false );
 
+    this.grid = new Grid();
+    this.showGrid();
+
     tempThis = this;
     this.animate();
   }
@@ -64,7 +68,7 @@ class Animation {
     return newgroup;
   }
 
-  addBox(group,x,y,z,width,depth,height,color=0xffffff, opacity=0.5){
+  addMeshBox(group,x,y,z,width,depth,height,color=0xffffff, opacity=0.7){
     var geometry = new THREE.BoxBufferGeometry( width, height, depth );
     var wireframe = new THREE.EdgesGeometry( geometry );
     var mat = new THREE.LineBasicMaterial( { color: color, linewidth: 2 } );
@@ -77,6 +81,75 @@ class Animation {
     line.position.z = z;
     //this.scene.add( line );
     group.add( line );
+    return group;
+  }
+
+  addBox(group,x,y,z,width,depth,height,color=0xffffff, opacity=0.5){
+    var geometry = new THREE.BoxBufferGeometry( width, height, depth );
+    var wireframe = new THREE.EdgesGeometry( geometry );
+    var material = new THREE.MeshBasicMaterial( {color: color} );
+    var mat = new THREE.LineBasicMaterial( { color: color, linewidth: 5 } );
+    var line = new THREE.LineSegments( wireframe, mat );
+    var cube = new THREE.Mesh( geometry, material );
+    line.material.depthTest = false;
+    line.position.x = x;
+    line.position.y = y;
+    line.position.z = z;
+
+    cube.material.depthTest = false;
+    cube.material.opacity = opacity;
+    cube.material.transparent = true;
+    cube.position.x = x;
+    cube.position.y = y;
+    cube.position.z = z;
+    //this.scene.add( line );
+    group.add( line );
+    group.add( cube );
+    return group;
+  }
+
+  addBoxWithText(group,text,x,y,z,width,depth,height,color=0xffffff, opacity=0.5){
+    var canvas = document.createElement("canvas");
+    var ctx = canvas.getContext('2d');
+    ctx.font = 'bold 150px Times New Roman';
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, 300,150);
+    ctx.fillStyle = 'black';
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(text, 300 / 2 , 150 / 2 - 10);
+    var texture = new THREE.Texture(canvas);
+    texture.minFilter = THREE.LinearFilter;
+
+    var geometry = new THREE.BoxBufferGeometry( width, height, depth );
+    var material = new THREE.MeshBasicMaterial( {map: texture, transparent: true, color: color} );
+    material.map.needsUpdate = true;
+    var cube = new THREE.Mesh( geometry, material );
+    cube.material.depthTest = false;
+    cube.material.opacity = opacity;
+    cube.material.transparent = true;
+    cube.position.x = x;
+    cube.position.y = y;
+    cube.position.z = z;
+
+    var wireframe = new THREE.EdgesGeometry( geometry );
+    var mat = new THREE.LineBasicMaterial( { color: color, linewidth: 5 } );
+    var line = new THREE.LineSegments( wireframe, mat );
+    line.material.depthTest = false;
+    line.position.x = x;
+    line.position.y = y;
+    line.position.z = z;
+
+
+    //this.scene.add( line );
+    group.add( line );
+    group.add( cube );
+    return ctx;
+  }
+
+  showGrid(size = 1000){
+    var gridHelper = new THREE.GridHelper( this.grid.gridsize * size, size, 0x0000ff );
+    this.scene.add( gridHelper );
   }
 }
 exports.Animation = new Animation()

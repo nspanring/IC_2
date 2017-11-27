@@ -1,10 +1,13 @@
-var DEBUG = 1;
 const { Entity } = require('../entity.class.js');
 class Crossing extends Entity{
 	constructor(state, x, y){
+		super() // call constructor of Entity
 		// postion of the Crossing
 		this.x = x;
 		this.y = y;
+
+		this.grid_x = Animation.grid.getGrid(this.x, this.y).split(",")[0];
+		this.grid_y = Animation.grid.getGrid(this.x, this.y).split(",")[1];
 
 		//[TODO]: (Extra States if implement later): | 2: Up, Left | 3: Up, Right | 4: Left, Up | 5: Left, Down | 6: Right, Up | 7: Right, Down
 		this.state = state; // 0: up, down  | 1: left, right
@@ -13,6 +16,9 @@ class Crossing extends Entity{
 		this.switch_state_waittime_timout = 0;
 
 		this.connections = [/* ID of Street*/]; // all streets conectect to the crossing
+
+		this.group = Animation.addGroup()
+		this.crossing_ctx = Animation.addBoxWithText(this.group,'↕',this.x,0,this.y,50,50,10,0xFFFFFF)
 
 		// tmp grafikal demo
 		this.display();
@@ -27,12 +33,12 @@ class Crossing extends Entity{
 
 	// if return 0 than vehicle have to wait 5 sec and try again
 	use(state){
-		if(this.check_passable(state)){ // check if state is change able
+		if(this.checkPassable(state)){ // check if state is change able
 			if(this.in_use == 1){ // if curently in use wait but the state is secured at least 30sec. for the next use!
 				return 0;
 			}else{
 				this.in_use = 1;
-				this.display_use();
+				this.displayUse();
 				return 1;
 			}
 		}else{
@@ -40,7 +46,7 @@ class Crossing extends Entity{
 				return 0;
 			}else if(this.in_use == 1 && this.state == state){
 				this.in_use = 1;
-				this.display_use();
+				this.displayUse();
 				return 1;
 			}else {
 				return 0;
@@ -51,17 +57,17 @@ class Crossing extends Entity{
 	// when the vehicle have passed the Crossing the vehvicle requests an idle state!
 	idle(){
 		this.in_use = 0;
-		this.display_use();
+		this.displayUse();
 		return 1;
 	}
 
-	check_passable(state){
+	checkPassable(state){
 		if(this.in_use == 0 && this.state == state){
 			return 1;
 		}else if(this.in_use == 0){ // curently not used so we can switch the state
-			return this.switch_state(state);
+			return this.switchState(state);
 		}else if(this.switch_state_waittime == 0){ // in use but the waittime is over so we can change its state
-			return this.switch_state(state);
+			return this.switchState(state);
 		}else if(this.state == state){ // in use but the state is the same return 1
 			return 1;
 		}else{
@@ -69,14 +75,14 @@ class Crossing extends Entity{
 		}
 	}
 
-	switch_state(new_state, lane = 1) {
+	switchState(new_state, lane = 1) {
 		if(this.switch_state_waittime == 0){
 			this.state = new_state;
 			// tmp grafikal demo
-			this.display_update()
+			this.displayUpdate()
 
 			// set Timeout for waiting time
-			this.set_switch_state_waittime(10 * lane);
+			this.setSwitchStateWaittime(10 * lane);
 			return 1;
 		}else{
 			return 0;
@@ -84,37 +90,55 @@ class Crossing extends Entity{
 	}
 
 	// waittime in sec.
-	set_switch_state_waittime(waittime){
+	setSwitchStateWaittime(waittime){
 		clearTimeout(this.switch_state_waittime_timout);
 		this.switch_state_waittime = waittime;
 		// tmp grafikal demo
-		this.display_light();
+		this.displayLight();
 
 		this.switch_state_waittime_timout = setTimeout(function(tmp_this){
 			tmp_this.switch_state_waittime = 0;
 			// tmp grafikal demo
-			tmp_this.display_light();
-			// Debug
-			if(DEBUG == 1) console.log( "switch_state_waittime: ",  tmp_this.switch_state_waittime);
+			tmp_this.displayLight();
 		}, waittime * 1000, this);
+	}
+
+	changeText(text){
+		this.crossing_ctx.font = 'bold 150px Times New Roman';
+    this.crossing_ctx.fillStyle = 'white';
+    this.crossing_ctx.fillRect(0, 0, 300, 150);
+    this.crossing_ctx.fillStyle = 'black';
+    this.crossing_ctx.textAlign = "center";
+    this.crossing_ctx.textBaseline = "middle";
+    this.crossing_ctx.fillText(text, 300 / 2 , 150 / 2 - 10);
 	}
 
 	// tmp grafikal demo
 	display(){
-		$('#world').append('<div id="Crossing_'+this.id+'" class="crossing"></div>');
-		this.display_update()
+		//$('#world').append('<div id="Crossing_'+this.id+'" class="crossing"></div>');
+		this.displayUpdate()
 	}
-	display_update(){
-		if(this.state == 0) $('#Crossing_'+this.id).text('↕');
-		if(this.state == 1) $('#Crossing_'+this.id).text('↔');
+	displayUpdate(){
+		if(this.state == 0){
+			this.group.children[1].material.color.setHex(0xFFFF00);
+			this.changeText('↕');
+		}//↕
+		if(this.state == 1){
+			this.group.children[1].material.color.setHex(0x00FFFF);
+			this.changeText('↔');
+		}//↔
 	}
-	display_light(){
-		if(this.switch_state_waittime == 0) $('#Crossing_'+this.id).css('background-color', 'white');
-		if(this.switch_state_waittime != 0) $('#Crossing_'+this.id).css('background-color', 'lightgreen');
+	displayLight(){
+		if(this.switch_state_waittime == 0) this.group.children[0].material.color.setHex(0x00FF00);
+		if(this.switch_state_waittime != 0) this.group.children[0].material.color.setHex(0xFF0000);
+		//if(this.switch_state_waittime == 0) $('#Crossing_'+this.id).css('background-color', 'white');
+		//if(this.switch_state_waittime != 0) $('#Crossing_'+this.id).css('background-color', 'lightgreen');
 	}
-	display_use(){
-		if(this.in_use == 0) $('#Crossing_'+this.id).css('color', 'black');
-		if(this.in_use == 1) $('#Crossing_'+this.id).css('color', 'red');
+	displayUse(){
+		if(this.in_use == 0){
+			this.displayUpdate()
+		}
+		if(this.in_use == 1) this.group.children[1].material.color.setHex(0xFF0000);
 	}
 }
 exports.Crossing = Crossing

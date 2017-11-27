@@ -22,7 +22,8 @@ var seed = "5345345"
 $( document ).ready(function() {
   document.body.appendChild( Animation.renderer.domElement );
   const { Human } = require('./js/class/human/human.class.js')
-  const { Building } = require('./js/class/building/building.class.js')
+  const { BuildingManager } = require('./js/class/building/building.manager.class.js')
+  const { TrafficManager } = require('./js/class/traffic/traffic.manager.class.js')
 
   log(NOTE, "--- START ---")
   log(NOTE, "Node: "+process.versions.node )
@@ -32,12 +33,8 @@ $( document ).ready(function() {
   //AnimationProcess = new Animation()
 
   firstHuman = new Human()
-  firstBuilding = new Building(20,10,0,0)
-  firstBuilding = new Building(20,7,150,0)
-  firstBuilding = new Building(20,8,300,0)
-  firstBuilding = new Building(20,6,450,0)
-  firstBuilding = new Building(20,4,600,0)
+  builder = new BuildingManager();
+  traffic = new TrafficManager();
 
   console.log(firstHuman)
-  console.log(firstBuilding)
 })
