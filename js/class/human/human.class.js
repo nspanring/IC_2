@@ -1,6 +1,6 @@
 
 const { Entity } = require('../entity.class.js');
-const { Work } = require('./work.class.js');
+const { Work } = require('./human.work.class.js');
 class Human extends Entity {
   constructor(){
     super() // call constructor of Entity

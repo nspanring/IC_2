@@ -1,7 +1,6 @@
-
 var DEBUG = 1;
-
-class Crossing {
+const { Entity } = require('../entity.class.js');
+class Crossing extends Entity{
 	constructor(state, x, y){
 		// postion of the Crossing
 		this.x = x;

@@ -1,5 +1,5 @@
-
-class Vehicle{
+const { Entity } = require('../entity.class.js');
+class Vehicle extends Entity{
 	constructor(){
 
 	}

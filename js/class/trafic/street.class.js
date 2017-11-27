@@ -1,5 +1,5 @@
-
-class Street {
+const { Entity } = require('../entity.class.js');
+class Street extends Entity{
 	constructor(state, lane = 1, connections = undefined){
 
 		this.ID = world_id + 1; world_id++;
