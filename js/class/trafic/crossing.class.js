@@ -119,3 +119,4 @@ class Crossing {
 		if(this.in_use == 1) $('#Crossing_'+this.id).css('color', 'red');
 	}
 }
+exports.Crossing = Crossing

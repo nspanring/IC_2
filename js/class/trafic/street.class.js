@@ -27,7 +27,7 @@ class Street {
 		this.contacts[crossing.ID] = crossing;
 		this.contacts_ID[this.connects_c] = crossing.ID;
 		this.connects_c++;
-		
+
 		if(this.connects_c == 2){
 			this.calc_position();
 		}
@@ -43,3 +43,4 @@ class Street {
 		return 1;
 	}
 }
+exports.Street = Street

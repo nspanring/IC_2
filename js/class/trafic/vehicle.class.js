@@ -4,3 +4,4 @@ class Vehicle{
 
 	}
 }
+exports.Vehicle = Vehicle
