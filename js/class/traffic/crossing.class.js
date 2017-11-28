@@ -121,22 +121,27 @@ class Crossing extends Entity{
 	}
 	displayUpdate(){
 		if(this.state == 0){
-			this.group.children[1].material.color.setHex(0xFFFF00);
+			//this.group.children[1].material.color.setHex(0xFFFF00);
 			this.changeText('↕');
 		}//↕
 		if(this.state == 1){
-			this.group.children[1].material.color.setHex(0x00FFFF);
+			//this.group.children[1].material.color.setHex(0x00FFFF);
 			this.changeText('↔');
 		}//↔
 	}
 	displayLight(){
-		if(this.switch_state_waittime == 0) this.group.children[0].material.color.setHex(0x00FF00);
-		if(this.switch_state_waittime != 0) this.group.children[0].material.color.setHex(0xFF0000);
+		if(this.in_use == 0){
+			if(this.switch_state_waittime == 0) this.group.children[1].material.color.setHex(0x00FF00);
+			if(this.switch_state_waittime != 0) this.group.children[1].material.color.setHex(0xFFFF00);
+		}else{
+			this.group.children[1].material.color.setHex(0xFF0000);
+		}
 		//if(this.switch_state_waittime == 0) $('#Crossing_'+this.id).css('background-color', 'white');
 		//if(this.switch_state_waittime != 0) $('#Crossing_'+this.id).css('background-color', 'lightgreen');
 	}
 	displayUse(){
 		if(this.in_use == 0){
+			this.displayLight()
 			this.displayUpdate()
 		}
 		if(this.in_use == 1) this.group.children[1].material.color.setHex(0xFF0000);

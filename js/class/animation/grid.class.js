@@ -16,8 +16,14 @@ class Grid {
 
   getPosition(grid_id){
     var grid_xy = grid_id.split(",");
-    var x = grid_xy[0] * this.gridsize + (this.gridsize / 2);
-    var y = grid_xy[1] * this.gridsize + (this.gridsize / 2);
+    var x = parseInt(grid_xy[0]) * this.gridsize + (this.gridsize / 2);
+    var y = parseInt(grid_xy[1]) * this.gridsize + (this.gridsize / 2);
+    return [x,y];
+  }
+
+  getCoordinates(grid_x, grid_y){
+    var x = parseInt(grid_x) * this.gridsize + (this.gridsize / 2);
+    var y = parseInt(grid_y) * this.gridsize + (this.gridsize / 2);
     return [x,y];
   }
 

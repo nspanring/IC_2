@@ -11,8 +11,12 @@ class Street extends Entity{
 		// The position will be calculated from the contacts the Street has
 		this.x1 = undefined;
 		this.y1 = undefined;
+		this.grid_x1 = undefined;
+		this.grid_y1 = undefined;
 		this.x2 = undefined;
 		this.y2 = undefined;
+		this.grid_x2 = undefined;
+		this.grid_y2 = undefined;
 
 		if(connections != undefined && connections.length == 2){
 			this.connect(connections[0]);
@@ -26,27 +30,44 @@ class Street extends Entity{
 		var newy = this.y1;
 		var size_w = 50;
 		var size_d = 50;
+		var gdiff = 0;
 
 		// if vertical connection (2D):
 		if(this.x1 == this.x2){
-			if(this.y1 < this.y2){
+			if(this.y1 < this.y2){ // links nach rechts
 				size_d = (this.y2 - this.y1) - 50;
 				newy = this.y1 + (this.y2 - this.y1)/2;
+				gdiff = this.grid_y2 - this.grid_y1 // diff
+				for (var i = 1; i < gdiff; i++) {
+					Animation.grid.addToGrid(this, this.grid_x1, this.grid_y1+i);
+				}
 			}
-			if(this.y1 > this.y2){
+			if(this.y1 > this.y2){ // rechts nach links
 				size_d = (this.y1 - this.y2) - 50;
 				newy = this.y2 + (this.y1 - this.y2)/2;
+				gdiff = this.grid_y1 - this.grid_y2 // diff
+				for (var i = 1; i < gdiff; i++) {
+					Animation.grid.addToGrid(this, this.grid_x1, this.grid_y2+i);
+				}
 			}
 		}
 		// if horizontal connection (2D):
 		if(this.y1 == this.y2){
-			if(this.x1 < this.x2){
+			if(this.x1 < this.x2){ // oben nach unten
 				size_w = (this.x2 - this.x1) - 50;
 				newx = this.x1 + (this.x2 - this.x1)/2;
+				gdiff = this.grid_x2 - this.grid_x1 // diff
+				for (var i = 1; i < gdiff; i++) {
+					Animation.grid.addToGrid(this, this.grid_x1+i, this.grid_y1);
+				}
 			}
-			if(this.x1 > this.x2){
+			if(this.x1 > this.x2){ // unten nach oben
 				size_w = (this.x1 - this.x2) - 50;
 				newx = this.x2 + (this.x1 - this.x2)/2;
+				gdiff = this.grid_x1 - this.grid_x2 // diff
+				for (var i = 1; i < gdiff; i++) {
+					Animation.grid.addToGrid(this, this.grid_x2+i, this.grid_y1);
+				}
 			}
 		}
 		this.crossing_box = Animation.addMeshBox(this.group,newx,0,newy,size_w,size_d,10,0xCCCCCC)
@@ -72,6 +93,10 @@ class Street extends Entity{
 		this.x2 = this.contacts[this.contacts_ID[1]].x
 		this.y2 = this.contacts[this.contacts_ID[1]].y
 
+		this.grid_x1 = parseInt(this.contacts[this.contacts_ID[0]].grid_x)
+		this.grid_y1 = parseInt(this.contacts[this.contacts_ID[0]].grid_y)
+		this.grid_x2 = parseInt(this.contacts[this.contacts_ID[1]].grid_x)
+		this.grid_y2 = parseInt(this.contacts[this.contacts_ID[1]].grid_y)
 		/*
 		if(this.x1 < this.x2){
 			var tmp_x1 = this.x1; this.x1 = this.x2; this.x2 = tmp_x1;
