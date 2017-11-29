@@ -36,5 +36,22 @@ $( document ).ready(function() {
   builder = new BuildingManager();
   traffic = new TrafficManager();
 
+  $('html').keydown(function(e){
+     switch (e.which) {
+       case 38:
+         traffic.firstVehicle.drive(1)
+         break;
+       case 39:
+         traffic.firstVehicle.drive(2)
+        break;
+       case 40:
+         traffic.firstVehicle.drive(3)
+        break;
+       case 37:
+          traffic.firstVehicle.drive(4)
+        break;
+     }
+  });
+
   console.log(firstHuman)
 })

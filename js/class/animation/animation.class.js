@@ -2,40 +2,26 @@ var tempThis;
 const { Grid } = require('../animation/grid.class.js');
 class Animation {
   constructor(){
-    this.renderer = new THREE.WebGLRenderer( { antialias: true } );
+    this.renderer = new THREE.WebGLRenderer( { antialias: true, logarithmicDepthBuffer: true } );
     this.renderer.setPixelRatio( window.devicePixelRatio );
     this.renderer.setSize( window.innerWidth, window.innerHeight );
     //document.body.appendChild( this.renderer.domElement );
 
-    this.camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
+    this.camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 5000 );
     this.camera.position.z = 400;
 
     this.scene = new THREE.Scene();
-    this.scene.add( new THREE.AmbientLight( 0x888888 ) );
-    // this.scene.add( new THREE.AxisHelper( 100 ) ); // helper
+    this.scene.add( new THREE.AmbientLight( 0xFFFFFF ) );
+    //this.scene.add( new THREE.AxisHelper( 100 ) ); // helper
     // controls
 
     this.controls = new OrbitControls( this.camera, this.renderer.domElement );
-    this.controls.minDistance = 20;
-    this.controls.maxDistance = 500;
+    this.controls.minDistance = 10;
+    this.controls.maxDistance = 1000;
     this.controls.maxPolarAngle = Math.PI / 2;
 
     this.light = new THREE.PointLight( 0xffffff, 1 );
     this.camera.add( this.light );
-
-    this.group = new THREE.Group();
-    this.scene.add( this.group );
-
-    this.geometry = new THREE.BoxBufferGeometry( 20, 20, 20 );
-    this.wireframe = new THREE.WireframeGeometry( this.geometry );
-    this.mat = new THREE.LineBasicMaterial( { color: 0xffffff, linewidth: 2 } );
-    this.line = new THREE.LineSegments( this.wireframe, this.mat );
-    this.line.material.depthTest = false;
-    this.line.material.opacity = 0.5;
-    this.line.material.transparent = true;
-    this.scene.add( this.line );
-
-    this.group.add( this.line );
 
     window.addEventListener( 'resize', this.onWindowResize, false );
 
@@ -56,8 +42,8 @@ class Animation {
   animate() {
     requestAnimationFrame( tempThis.animate );
 
-    tempThis.group.rotation.x += 0.00;
-    tempThis.group.rotation.y += 0.01;
+    //tempThis.group.rotation.x += 0.00;
+    //tempThis.group.rotation.y += 0.01;
 
     tempThis.renderer.render( tempThis.scene, tempThis.camera );
   }

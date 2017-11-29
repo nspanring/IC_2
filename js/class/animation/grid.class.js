@@ -7,6 +7,10 @@ class Grid {
     this.grid = [];
   }
 
+  getGridArray() {
+    return $.extend(true, [], this.grid);;
+  }
+
   getGrid(x, y){
     var grid_x = Math.round((x - 0.01) / this.gridsize);
     var grid_y = Math.round((y - 0.01) / this.gridsize);

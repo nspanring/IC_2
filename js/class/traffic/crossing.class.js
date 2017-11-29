@@ -18,7 +18,7 @@ class Crossing extends Entity{
 		this.connections = [/* ID of Street*/]; // all streets conectect to the crossing
 
 		this.group = Animation.addGroup()
-		this.crossing_ctx = Animation.addBoxWithText(this.group,'↕',this.x,0,this.y,50,50,10,0xFFFFFF)
+		this.crossing_ctx = Animation.addBox(this.group,this.x,0,this.y,50,50,10,0xFFFFFF)
 
 		Animation.grid.addToGrid(this, this.grid_x, this.grid_y);
 		// tmp grafikal demo
@@ -122,11 +122,11 @@ class Crossing extends Entity{
 	displayUpdate(){
 		if(this.state == 0){
 			//this.group.children[1].material.color.setHex(0xFFFF00);
-			this.changeText('↕');
+			//this.changeText('↕');
 		}//↕
 		if(this.state == 1){
 			//this.group.children[1].material.color.setHex(0x00FFFF);
-			this.changeText('↔');
+			//this.changeText('↔');
 		}//↔
 	}
 	displayLight(){
