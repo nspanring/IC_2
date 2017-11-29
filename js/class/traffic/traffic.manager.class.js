@@ -4,6 +4,10 @@ const { Vehicle } = require('./vehicle.class.js');
 class TrafficManager{
 	constructor(){
 		this.test();
+		// North east south west: more as 1 neighbor = Crossing dies and turns to Street
+		// Street more as 5 neighbor Tourns to Crossing
+		// Crossing more as 5 neighbor Tourn to Building
+		// Formel: B > 2N -> C > 1N -> S > 5N -> C > 5N -> B
 	}
 
 	test(){
