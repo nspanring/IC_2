@@ -32,8 +32,8 @@ const { CityManager } = require('./js/class/manager/city.manager.class.js');
 
 // Directly init this Classes Global!
 var Animation = require('./js/class/animation/animation.class.js').Animation
-var BuildingManager = require('./js/class/manager/building.manager.class.js').BuildingManager
 var TrafficManager = require('./js/class/manager/traffic.manager.class.js').TrafficManager
+var BuildingManager = require('./js/class/manager/building.manager.class.js').BuildingManager
 
 /**
  * View

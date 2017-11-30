@@ -5,7 +5,6 @@ class TrafficManager extends CityManager{
 	constructor(){
 		super();
 
-		this.network = []; // all Traffic obj will be stored there exept vehicles
 		this.network['Crossing'] = [];
 		this.network['Street'] = [];
 		this.network_id_c = 1;
@@ -50,7 +49,7 @@ class TrafficManager extends CityManager{
 			}
 	}
 
-	checkCrossing(grid_x, grid_y){
+	checkCrossing(grid_x, grid_y, update = 0){
 		counter = this.countNeighbours(grid_x, grid_y, 1); // get direct Neighbours
     if(counter['Crossing'] > 3) // Crossing trouns to Building
     console.log(Animation.grid.grid[grid_x][grid_y], '->', 'Building');
@@ -88,7 +87,7 @@ class TrafficManager extends CityManager{
 		return 1;
 	}
 
-	checkStreet(grid_x, grid_y){
+	checkStreet(grid_x, grid_y, update = 0){
 		counter = this.countNeighbours(grid_x, grid_y, 1); // get direct Neighbours
     if(counter['Street'] > 4) // Crossing trouns to Building
     console.log(Animation.grid.grid[grid_x][grid_y], '->', 'Building');

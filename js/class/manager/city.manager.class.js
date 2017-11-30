@@ -4,6 +4,7 @@
 class CityManager {
   constructor() {
 
+    this.network = []; // all Traffic obj will be stored there exept vehicles
   }
 
   // mode 1: do not add own position

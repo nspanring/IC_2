@@ -23,7 +23,6 @@ class Vehicle extends Entity{
 		if(this.waiting == 1) return 0; // Vehicle can't drive if it is waiting
 
 		if(this.queue.length == 0) this.queue = this.findShortestPath(x,y);
-		if(this.queue == false) return this.queue;
 
 		var grid_x = this.grid_x;
 		var grid_y = this.grid_y;
@@ -55,8 +54,14 @@ class Vehicle extends Entity{
 		this.grid_y_tmp = grid_y;
 
 		// if the possition is not set reutrn false
-		if(Animation.grid.grid[grid_x] === undefined) return 0;
-		if(Animation.grid.grid[grid_x][grid_y] === undefined) return 0;
+		if(Animation.grid.grid[grid_x] === undefined){
+			this.queue = [];
+			return 0;
+		}
+		if(Animation.grid.grid[grid_x][grid_y] === undefined){
+			this.queue = [];
+			return 0;
+		}
 
 		this.next_obj = Animation.grid.grid[grid_x][grid_y];
 
@@ -98,7 +103,7 @@ class Vehicle extends Entity{
 		this.group.position.set(this.x, 0, this.y);
 		this.grid_x = this.grid_x_tmp;
 		this.grid_y = this.grid_y_tmp;
-		this.queue.shift();
+		if(this.queue !== false) this.queue.shift();
 	}
 
 /*
@@ -156,6 +161,8 @@ class Vehicle extends Entity{
 		else var gridSizey = grid.length;
 		var y = location.y;
 		var x = location.x;
+
+		// needs a try catch element
 
 		if (location.x <= (-1) * gridSizex ||
 		location.x >= gridSizex ||
