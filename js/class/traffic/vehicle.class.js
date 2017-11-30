@@ -1,4 +1,3 @@
-const { Entity } = require('../entity.class.js');
 class Vehicle extends Entity{
 	constructor(grid_x = 0, grid_y = 0){
 		super() // call constructor of Entity

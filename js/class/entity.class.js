@@ -1,3 +1,4 @@
+if(world_id == undefined) var world_id = 0;
 /**
  * Every Object which can be renderd/displayed MUST have this Entity class!
  */

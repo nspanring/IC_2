@@ -1,4 +1,3 @@
-const { Entity } = require('../entity.class.js');
 class Crossing extends Entity{
 	constructor(state, x, y){
 		super() // call constructor of Entity

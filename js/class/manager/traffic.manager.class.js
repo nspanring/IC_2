@@ -1,8 +1,9 @@
-const { Crossing } = require('./crossing.class.js');
-const { Street } = require('./street.class.js');
-const { Vehicle } = require('./vehicle.class.js');
-class TrafficManager{
+const { Crossing } = require('../traffic/crossing.class.js');
+const { Street } = require('../traffic/street.class.js');
+const { Vehicle } = require('../traffic/vehicle.class.js');
+class TrafficManager extends CityManager{
 	constructor(){
+		super();
 		this.test();
 		// North east south west: more as 1 neighbor = Crossing dies and turns to Street
 		// Street more as 5 neighbor Tourns to Crossing
@@ -66,4 +67,4 @@ class TrafficManager{
 */
 	}
 }
-exports.TrafficManager = TrafficManager
+exports.TrafficManager = new TrafficManager()
