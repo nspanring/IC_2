@@ -6,11 +6,12 @@ class CityManager {
 
   }
 
-  scanNeighbours(grid_x, grid_y, max_distance = 10){
+  // mode 1: do not add own position
+  scanNeighbours(grid_x, grid_y, max_distance = 15, mode=0){
     var neighbors = [];
 
     if(Animation.grid.grid[grid_x] !== undefined)
-    if(Animation.grid.grid[grid_x][grid_y] !== undefined){
+    if(Animation.grid.grid[grid_x][grid_y] !== undefined && mode == 0){
       neighbors[1] = Animation.grid.grid[grid_x][grid_y];
       neighbors[2] = Animation.grid.grid[grid_x][grid_y];
       neighbors[3] = Animation.grid.grid[grid_x][grid_y];

@@ -8,6 +8,7 @@ class TrafficManager extends CityManager{
 		this.network = []; // all Traffic obj will be stored there exept vehicles
 		this.network['Crossing'] = [];
 		this.network['Street'] = [];
+		this.network_id_c = 1;
 
 		this.Vehicles = [];
 		// North east south west: more as 1 neighbor = Crossing dies and turns to Street
@@ -21,8 +22,32 @@ class TrafficManager extends CityManager{
 
 	addCrossing(grid_x, grid_y){
 		var position_xy = Animation.grid.getPosition(grid_x+','+grid_y);
-		this.network['Crossing'][this.network['Crossing'].length] = new Crossing(0, position_xy[0], position_xy[1]);
+		this.network['Crossing'][this.network_id_c] = new Crossing(this.network_id_c++, 0, position_xy[0], position_xy[1]);
+
+		var neighbors = this.scanNeighbours(grid_x,grid_y, 15, 1); // max dist 10
+		for (var i = 1; i <= neighbors.length; i++) {
+			if(neighbors[i] !== undefined) if(neighbors[i].constructor.name == 'Crossing'){ // add street
+				this.addStreet(grid_x, grid_y);
+				if(i == 1) this.addStreet(grid_x, grid_y - 1);
+				if(i == 2) this.addStreet(grid_x + 1, grid_y);
+				if(i == 3) this.addStreet(grid_x, grid_y + 1);
+				if(i == 4) this.addStreet(grid_x - 1, grid_y);
+			}
+		}
+
 		return 1;
+	}
+
+	removeCrossing(grid_x, grid_y){
+			Animation.scene.remove(Animation.grid.grid[grid_x][grid_y].group);
+			var connectedStreets = Animation.grid.grid[grid_x][grid_y].connections;
+			this.network['Crossing'][Animation.grid.grid[grid_x][grid_y].ID] = undefined
+			Animation.grid.removeFromGrid(grid_x,grid_y)
+
+			for (var i = 0; i < connectedStreets.length; i++) {
+				if(connectedStreets[i] !== undefined)
+				this.removeStreet(connectedStreets[i]);
+			}
 	}
 
 	checkCrossing(grid_x, grid_y){
@@ -35,21 +60,31 @@ class TrafficManager extends CityManager{
 		var neighbors = this.scanNeighbours(grid_x,grid_y); // max dist 10
 		var connections = [];
 		var state = 0;
-		if(neighbors[1] !== undefined && neighbors[3] !== undefined){
-			if(neighbors[1].constructor.name == 'Crossing' && neighbors[3].constructor.name == 'Crossing'){
-				connections[connections.length] = neighbors[1]; // North ->
-				connections[connections.length] = neighbors[3]; // South
-				state = 0;
-			}
-		}else if(neighbors[4] !== undefined && neighbors[2] !== undefined){
-			if(neighbors[4].constructor.name == 'Crossing' && neighbors[2].constructor.name == 'Crossing'){
-				connections[connections.length] = neighbors[4]; // West ->
-				connections[connections.length] = neighbors[2]; // East
-				state = 1;
+		if(neighbors[1] !== undefined && neighbors[3] !== undefined && neighbors[1].constructor.name == 'Crossing' && neighbors[3].constructor.name == 'Crossing'){
+			connections[connections.length] = neighbors[1]; // North ->
+			connections[connections.length] = neighbors[3]; // South
+			state = 0;
+			this.network['Street'][this.network_id_c] = new Street(this.network_id_c++, state, lane, [connections[0], connections[1]]);
+		}
+		connections = [];
+		if(neighbors[4] !== undefined && neighbors[2] !== undefined && neighbors[4].constructor.name == 'Crossing' && neighbors[2].constructor.name == 'Crossing'){
+			connections[connections.length] = neighbors[4]; // West ->
+			connections[connections.length] = neighbors[2]; // East
+			state = 1;
+			this.network['Street'][this.network_id_c] = new Street(this.network_id_c++, state, lane, [connections[0], connections[1]]);
+		}
+		return 1;
+	}
+
+	removeStreet(street){
+		for (var i = 0; i < street.grid_pices.length; i++) {
+			if(Animation.grid.grid[street.grid_pices[i].x][street.grid_pices[i].y] !== undefined)
+			if(Animation.grid.grid[street.grid_pices[i].x][street.grid_pices[i].y].constructor.name === 'Street'){
+				Animation.grid.removeFromGrid(street.grid_pices[i].x,street.grid_pices[i].y)
 			}
 		}
-		if(connections.length < 2) return false;
-		this.network['Street'][this.network['Street'].length] =this.first_street1 = new Street(state, lane, [connections[0], connections[1]]);
+		Animation.scene.remove(street.group);
+		this.network['Street'][street.ID] = undefined;
 		return 1;
 	}
 
@@ -71,43 +106,7 @@ class TrafficManager extends CityManager{
 		this.addCrossing(9, 2);
 		this.addCrossing(-1, 2);
 
-		this.addStreet(0, -1);
-		this.addStreet(-1, 0);
-		this.addStreet(0, 1);
-		this.addStreet(1, 0);
-		this.addStreet(2, -1);
-		this.addStreet(3, 0);
-		this.addStreet(2, 1);
-		this.addStreet(4, 1);
-		this.addStreet(1, 2);
-
-		this.addStreet(-1, 2);
-
-		/*
-		this.first_street1 = new Street(1, 1, [this.crossingtest1, this.crossingtest2]);
-		this.first_street2 = new Street(1, 1, [this.crossingtest2, this.crossingtest3]);
-		this.first_street3 = new Street(1, 1, [this.crossingtest2, this.crossingtest4]);
-
-		this.first_street4 = new Street(1, 1, [this.crossingtest1, this.crossingtest0]);
-		this.first_street5 = new Street(1, 1, [this.crossingtest0, this.crossingtest3]);
-		this.first_street6 = new Street(1, 1, [this.crossingtest3, this.crossingtest5]);
-		this.first_street7 = new Street(1, 1, [this.crossingtest5, this.crossingtest4]);
-		this.first_street7 = new Street(1, 1, [this.crossingtest4, this.crossingtestfaraway]);
-		this.first_street7 = new Street(1, 1, [this.crossingtestfaraway, this.crossingtestfaraway2]);
-		this.first_street7 = new Street(1, 1, [this.crossingtestfaraway2, this.crossingtest6]);
-		this.first_street7 = new Street(1, 1, [this.crossingtest6, this.crossingtest1]);
-		*/
-
 		this.firstVehicle = new Vehicle(-1,-1);
-		//this.firstVehicle.drive(3,1);
-/*
-		crossingtest1.use(1);
-		crossingtest1.idle(1);
-		crossingtest2.use(0);
-		crossingtest2.idle(1);
-		crossingtest4.use(1);
-		crossingtest4.idle(1);
-*/
 	}
 }
 exports.TrafficManager = new TrafficManager()

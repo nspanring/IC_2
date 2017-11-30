@@ -1,6 +1,8 @@
 class Crossing extends Entity{
-	constructor(state, x, y){
+	constructor(id, state, x, y){
 		super() // call constructor of Entity
+
+		this.ID = id;
 		// postion of the Crossing
 		this.x = x;
 		this.y = y;
@@ -26,7 +28,7 @@ class Crossing extends Entity{
 
 	// init from the @Street class | never from the @Crossing class !!!
 	connect(street){
-		if(this.connections.length > 3) return 0;
+		//if(this.connections.length > 3) return 0;
 		this.connections[street.ID] = street;
 		return 1;
 	}

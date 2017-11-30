@@ -37,7 +37,7 @@ class Grid {
   }
   removeFromGrid(x, y){
     if(this.grid[x] == undefined) this.grid[x] = [];
-    this.grid[x][y] = null;
+    this.grid[x][y] = undefined;
   }
 }
 exports.Grid=Grid

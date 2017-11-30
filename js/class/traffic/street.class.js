@@ -1,6 +1,7 @@
 class Street extends Entity{
-	constructor(state, lane = 1, connections = undefined){
+	constructor(id, state, lane = 1, connections = undefined){
 		super() // call constructor of Entity
+		this.ID = id;
 		this.state = state; // 0: left, right | 1: up, down
 		this.lane = lane;
 		this.contacts = []; // max 2 (begin and and of steet can have a connection)
@@ -16,6 +17,8 @@ class Street extends Entity{
 		this.y2 = undefined;
 		this.grid_x2 = undefined;
 		this.grid_y2 = undefined;
+
+		this.grid_pices = [];
 
 		if(connections != undefined && connections.length == 2){
 			this.connect(connections[0]);
@@ -38,7 +41,7 @@ class Street extends Entity{
 				newy = this.y1 + (this.y2 - this.y1)/2;
 				gdiff = this.grid_y2 - this.grid_y1 // diff
 				for (var i = 1; i < gdiff; i++) {
-					Animation.grid.addToGrid(this, this.grid_x1, this.grid_y1+i);
+					this.testIntersection(this.grid_x1, this.grid_y1+i)
 				}
 			}
 			if(this.y1 > this.y2){ // rechts nach links
@@ -46,7 +49,7 @@ class Street extends Entity{
 				newy = this.y2 + (this.y1 - this.y2)/2;
 				gdiff = this.grid_y1 - this.grid_y2 // diff
 				for (var i = 1; i < gdiff; i++) {
-					Animation.grid.addToGrid(this, this.grid_x1, this.grid_y2+i);
+					this.testIntersection(this.grid_x1, this.grid_y2 + i)
 				}
 			}
 		}
@@ -57,7 +60,7 @@ class Street extends Entity{
 				newx = this.x1 + (this.x2 - this.x1)/2;
 				gdiff = this.grid_x2 - this.grid_x1 // diff
 				for (var i = 1; i < gdiff; i++) {
-					Animation.grid.addToGrid(this, this.grid_x1+i, this.grid_y1);
+					this.testIntersection(this.grid_x1+i, this.grid_y1)
 				}
 			}
 			if(this.x1 > this.x2){ // unten nach oben
@@ -65,11 +68,21 @@ class Street extends Entity{
 				newx = this.x2 + (this.x1 - this.x2)/2;
 				gdiff = this.grid_x1 - this.grid_x2 // diff
 				for (var i = 1; i < gdiff; i++) {
-					Animation.grid.addToGrid(this, this.grid_x2+i, this.grid_y1);
+					this.testIntersection(this.grid_x2+i, this.grid_y1)
 				}
 			}
 		}
 		this.crossing_box = Animation.addMeshBox(this.group,newx,0,newy,size_w,size_d,10,0xCCCCCC)
+	}
+
+	testIntersection(grid_x, grid_y){
+		if(Animation.grid.grid[grid_x] == undefined || (
+			 Animation.grid.grid[grid_x][grid_y] == undefined || (
+			 Animation.grid.grid[grid_x][grid_y] !== undefined &&
+			 Animation.grid.grid[grid_x][grid_y].constructor.name !== 'Crossing' ))){
+				 Animation.grid.addToGrid(this, grid_x, grid_y);
+				  this.grid_pices[this.grid_pices.length] = {x: grid_x, y: grid_y};
+		}
 	}
 
 	//connect the street with a crossing

@@ -111,14 +111,14 @@ class Vehicle extends Entity{
 	findShortestPath(x2,y2){
 		var grid = Animation.grid.getGridArray(); // Animation class -> Grid Class -> grid array
 		grid[x2][y2] = "Goal";
-		var distanceFromLeft = this.grid_x;
-		var distanceFromTop = this.grid_y;
+		var x = this.grid_x;
+		var y = this.grid_y;
 
 		// Each "location" will store its coordinates
 		// and the shortest path required to arrive there
 		var location = {
-			distanceFromTop: distanceFromTop,
-			distanceFromLeft: distanceFromLeft,
+			y: y,
+			x: x,
 			path: [],
 			status: 'Start'
 		};
@@ -152,29 +152,31 @@ class Vehicle extends Entity{
 	// Returns "Valid", "Invalid", "Blocked", or "Goal"
 	locationStatus(location, grid, state, currentLocation){
 		var gridSizex = grid.length;
-		if (grid[dfl] !== undefined) var gridSizey = grid[dfl].length;
+		if (grid[x] !== undefined) var gridSizey = grid[x].length;
 		else var gridSizey = grid.length;
-		var dft = location.distanceFromTop;
-		var dfl = location.distanceFromLeft;
+		var y = location.y;
+		var x = location.x;
 
-		if (location.distanceFromLeft <= (-1) * gridSizex ||
-		location.distanceFromLeft >= gridSizex ||
-		location.distanceFromTop < (-1) * gridSizey ||
-		location.distanceFromTop >= gridSizey) {
+		if (location.x <= (-1) * gridSizex ||
+		location.x >= gridSizex ||
+		location.y < (-1) * gridSizey ||
+		location.y >= gridSizey) {
 			// location is not on the grid--return false
 			return 'Invalid';
-		} else if (grid[dfl] === undefined){
+		} else if (grid[x] === undefined){
 			return 'Blocked';
-		}	else if (grid[dfl][dft] === undefined || Animation.grid.grid[dfl][dft].constructor.name == 'Building'){
+		}	else if (grid[x][y] === undefined || Animation.grid.grid[x][y].constructor.name == 'Building'){
 			return 'Blocked';
-		}	else if (Animation.grid.grid[dfl][dft].constructor.name == 'Street' && Animation.grid.grid[dfl][dft].state !== state){
+		}	else if (Animation.grid.grid[x][y].constructor.name == 'Street' && Animation.grid.grid[x][y].state !== state){
 			return 'Blocked';
 		} else if( // if currentLocation is a street and its not leading to the same state we are goining to than BLOCK
-			Animation.grid.grid[currentLocation.distanceFromLeft][currentLocation.distanceFromTop].constructor.name == 'Street' &&
-			Animation.grid.grid[currentLocation.distanceFromLeft][currentLocation.distanceFromTop].state !== state
+			Animation.grid.grid[currentLocation.x][currentLocation.y].constructor.name == 'Street' &&
+			Animation.grid.grid[currentLocation.x][currentLocation.y].state !== state
 		){
 			return 'Blocked';
-		} else if (grid[dfl][dft] === 'Goal') {
+		} else if (grid[x][y] === 'Visited') {
+			return 'Blocked';
+		} else if (grid[x][y] === 'Goal') {
 			return 'Goal';
 		} else {
 			return 'Valid';
@@ -187,27 +189,28 @@ class Vehicle extends Entity{
 	exploreInDirection(currentLocation, direction, grid) {
 		var newPath = currentLocation.path.slice();
 
-		var dft = currentLocation.distanceFromTop;
-		var dfl = currentLocation.distanceFromLeft;
+		var x = currentLocation.x;
+		var y = currentLocation.y;
+
 		var state = 0; // 0 up <-> down| 1: right <-> left
 		if (direction === 1) {
-			dft -= 1;
+			y -= 1;
 			state = 0;
 		} else if (direction === 2) {
-			dfl += 1;
+			x += 1;
 			state = 1;
 		} else if (direction === 3) {
-			dft += 1;
+			y += 1;
 			state = 0;
 		} else if (direction === 4) {
-			dfl -= 1;
+			x -= 1;
 			state = 1;
 		}
 		newPath.push(direction);
 
 		var newLocation = {
-			distanceFromTop: dft,
-			distanceFromLeft: dfl,
+			y: y,
+			x: x,
 			path: newPath,
 			status: 'Unknown'
 		};
@@ -215,7 +218,7 @@ class Vehicle extends Entity{
 
 		// If this new location is valid, mark it as 'Visited'
 		if (newLocation.status === 'Valid') {
-			grid[newLocation.distanceFromLeft][newLocation.distanceFromTop] = 'Visited';
+			grid[newLocation.x][newLocation.y] = 'Visited';
 		}
 
 		return newLocation;
