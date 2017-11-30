@@ -57,7 +57,7 @@ class Animation {
   addMeshBox(group,x,y,z,width,depth,height,color=0xffffff, opacity=0.7){
     var geometry = new THREE.BoxBufferGeometry( width, height, depth );
     var wireframe = new THREE.EdgesGeometry( geometry );
-    var mat = new THREE.LineBasicMaterial( { color: color, linewidth: 2 } );
+    var mat = new THREE.LineBasicMaterial( { color: color, linewidth: 1 } );
     var line = new THREE.LineSegments( wireframe, mat );
     line.material.depthTest = false;
     line.material.opacity = opacity;
@@ -74,7 +74,7 @@ class Animation {
     var geometry = new THREE.BoxBufferGeometry( width, height, depth );
     var wireframe = new THREE.EdgesGeometry( geometry );
     var material = new THREE.MeshBasicMaterial( {color: color} );
-    var mat = new THREE.LineBasicMaterial( { color: color, linewidth: 5 } );
+    var mat = new THREE.LineBasicMaterial( { color: color, linewidth: 1 } );
     var line = new THREE.LineSegments( wireframe, mat );
     var cube = new THREE.Mesh( geometry, material );
     line.material.depthTest = false;
@@ -119,7 +119,7 @@ class Animation {
     cube.position.z = z;
 
     var wireframe = new THREE.EdgesGeometry( geometry );
-    var mat = new THREE.LineBasicMaterial( { color: color, linewidth: 5 } );
+    var mat = new THREE.LineBasicMaterial( { color: color, linewidth: 1 } );
     var line = new THREE.LineSegments( wireframe, mat );
     line.material.depthTest = false;
     line.position.x = x;
