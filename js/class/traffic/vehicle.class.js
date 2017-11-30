@@ -10,8 +10,11 @@ class Vehicle extends Entity{
 		this.queue = [];
 		var position_xy = Animation.grid.getPosition(grid_x+','+grid_y);
 		this.group = Animation.addGroup()
+		//this.scan = Animation.addGroup()
 		this.group.position.set(position_xy[0], 0, position_xy[1])
+		//this.scan.position.set(position_xy[0], 0, position_xy[1])
 		Animation.addMeshBox(this.group,position_xy[0] + (Animation.grid.gridsize/2),10,position_xy[1] + (Animation.grid.gridsize/2),10,10,10,0xffffff)
+		//Animation.addMeshBox(this.scan,position_xy[0] + (Animation.grid.gridsize/2),10,position_xy[1] + (Animation.grid.gridsize/2),10,10,10,0x0000ff)
 		this.last_obj = Animation.grid.grid[grid_x][grid_y];
 	}
 
@@ -20,6 +23,7 @@ class Vehicle extends Entity{
 		if(this.waiting == 1) return 0; // Vehicle can't drive if it is waiting
 
 		if(this.queue.length == 0) this.queue = this.findShortestPath(x,y);
+		if(this.queue == false) return this.queue;
 
 		var grid_x = this.grid_x;
 		var grid_y = this.grid_y;
@@ -60,6 +64,7 @@ class Vehicle extends Entity{
 		if(this.next_obj.constructor.name == "Crossing") return this.useCrossing(this);
 		if(this.next_obj.constructor.name == "Street") return this.useStreet();
 
+		this.queue = []; // Path blocked so we need a new path (clear queue)
 		return 0; // if every check failed
 	}
 
@@ -96,6 +101,11 @@ class Vehicle extends Entity{
 		this.queue.shift();
 	}
 
+/*
+	setNewScanPosition(grid_x, grid_y){
+		this.scan.position.set(grid_x, 0, grid_y);
+	}
+*/
 	// Start location will be in the following format:
 	// [x, y]
 	findShortestPath(x2,y2){
@@ -140,20 +150,29 @@ class Vehicle extends Entity{
 	// (a location is "valid" if it is on the grid, is not an "obstacle",
 	// and has not yet been visited by our algorithm)
 	// Returns "Valid", "Invalid", "Blocked", or "Goal"
-	locationStatus(location, grid){
-		var gridSize = grid.length;
+	locationStatus(location, grid, state, currentLocation){
+		var gridSizex = grid.length;
+		if (grid[dfl] !== undefined) var gridSizey = grid[dfl].length;
+		else var gridSizey = grid.length;
 		var dft = location.distanceFromTop;
 		var dfl = location.distanceFromLeft;
 
-		if (location.distanceFromLeft <= (-1) * gridSize ||
-		location.distanceFromLeft >= gridSize ||
-		location.distanceFromTop < (-1) * gridSize ||
-		location.distanceFromTop >= gridSize) {
+		if (location.distanceFromLeft <= (-1) * gridSizex ||
+		location.distanceFromLeft >= gridSizex ||
+		location.distanceFromTop < (-1) * gridSizey ||
+		location.distanceFromTop >= gridSizey) {
 			// location is not on the grid--return false
 			return 'Invalid';
 		} else if (grid[dfl] === undefined){
 			return 'Blocked';
-		}	else if (grid[dfl][dft] === undefined || grid[dfl][dft].constructor.name == 'Building'){
+		}	else if (grid[dfl][dft] === undefined || Animation.grid.grid[dfl][dft].constructor.name == 'Building'){
+			return 'Blocked';
+		}	else if (Animation.grid.grid[dfl][dft].constructor.name == 'Street' && Animation.grid.grid[dfl][dft].state !== state){
+			return 'Blocked';
+		} else if( // if currentLocation is a street and its not leading to the same state we are goining to than BLOCK
+			Animation.grid.grid[currentLocation.distanceFromLeft][currentLocation.distanceFromTop].constructor.name == 'Street' &&
+			Animation.grid.grid[currentLocation.distanceFromLeft][currentLocation.distanceFromTop].state !== state
+		){
 			return 'Blocked';
 		} else if (grid[dfl][dft] === 'Goal') {
 			return 'Goal';
@@ -170,15 +189,19 @@ class Vehicle extends Entity{
 
 		var dft = currentLocation.distanceFromTop;
 		var dfl = currentLocation.distanceFromLeft;
-
+		var state = 0; // 0 up <-> down| 1: right <-> left
 		if (direction === 1) {
 			dft -= 1;
+			state = 0;
 		} else if (direction === 2) {
 			dfl += 1;
+			state = 1;
 		} else if (direction === 3) {
 			dft += 1;
+			state = 0;
 		} else if (direction === 4) {
 			dfl -= 1;
+			state = 1;
 		}
 		newPath.push(direction);
 
@@ -188,7 +211,7 @@ class Vehicle extends Entity{
 			path: newPath,
 			status: 'Unknown'
 		};
-		newLocation.status = this.locationStatus(newLocation, grid);
+		newLocation.status = this.locationStatus(newLocation, grid, state, currentLocation);
 
 		// If this new location is valid, mark it as 'Visited'
 		if (newLocation.status === 'Valid') {

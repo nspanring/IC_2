@@ -7,6 +7,12 @@ class BuildingManager extends CityManager{
 		// Formel: B > 2N -> C > 1N -> S
   }
 
+  checkBuilding(grid_x, grid_y){
+    counter = this.countNeighbours(grid_x, grid_y, 1); // get direct Neighbours
+
+    if(counter['Building'] > 3)console.log(Animation.grid.grid[grid_x][grid_y], '->', 'Crossing');
+  }
+
   test() {
     // tmp: test
     var position_xy = Animation.grid.getPosition('0,0');

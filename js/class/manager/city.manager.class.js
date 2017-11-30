@@ -6,6 +6,49 @@ class CityManager {
 
   }
 
+  scanNeighbours(grid_x, grid_y, max_distance = 10){
+    var neighbors = [];
+
+    if(Animation.grid.grid[grid_x] !== undefined)
+    if(Animation.grid.grid[grid_x][grid_y] !== undefined){
+      neighbors[1] = Animation.grid.grid[grid_x][grid_y];
+      neighbors[2] = Animation.grid.grid[grid_x][grid_y];
+      neighbors[3] = Animation.grid.grid[grid_x][grid_y];
+      neighbors[4] = Animation.grid.grid[grid_x][grid_y];
+    }
+
+    for (var y = -1; y > grid_y - max_distance; y--) { // north
+      if(Animation.grid.grid[grid_x] !== undefined)
+      if(Animation.grid.grid[grid_x][grid_y + y] !== undefined){
+        neighbors[1] = Animation.grid.grid[grid_x][grid_y + y];
+        break;
+      }
+    }
+    for (var x = 1; x < grid_x + max_distance; x++) { // east
+      if(Animation.grid.grid[grid_x + x] !== undefined)
+      if(Animation.grid.grid[grid_x + x][grid_y] !== undefined){
+        neighbors[2] = Animation.grid.grid[grid_x + x][grid_y];
+        break;
+      }
+    }
+    for (var y = 1; y < grid_y + max_distance; y++) { // south
+      if(Animation.grid.grid[grid_x] !== undefined)
+      if(Animation.grid.grid[grid_x][grid_y + y] !== undefined){
+        neighbors[3] = Animation.grid.grid[grid_x][grid_y + y];
+        break;
+      }
+    }
+    for (var x = -1; x > grid_x - max_distance; x--) { // west
+      if(Animation.grid.grid[grid_x + x] !== undefined)
+      if(Animation.grid.grid[grid_x + x][grid_y] !== undefined){
+        neighbors[4] = Animation.grid.grid[grid_x + x][grid_y];
+        break;
+      }
+    }
+
+    return neighbors;
+  }
+
   getNeighbours(grid_x, grid_y, mode = 0){
     var neighbors = [];
     for (var x = -1; x <= 1; x++) { // left right scan
@@ -34,23 +77,6 @@ class CityManager {
     }
 
     return counter;
-
-    if(mode == 1){
-      switch (Animation.grid.grid[grid_x][grid_y].constructor.name) {
-        case 'Building':
-          if(counter['Building'] > 3) // Building tourns to Crossing
-          console.log(Animation.grid.grid[grid_x][grid_y], '->', 'Crossing');
-          break;
-        case 'Crossing':
-          if(counter['Crossing'] > 3) // Crossing trouns to Building
-          console.log(Animation.grid.grid[grid_x][grid_y], '->', 'Building');
-          break;
-        case 'Street':
-          if(counter['Street'] > 4) // Street tourns to Crossing (makes sense i quess)
-          console.log(Animation.grid.grid[grid_x][grid_y], '->', 'Street');
-          break;
-      }
-    }
   }
 }
 exports.CityManager = CityManager
