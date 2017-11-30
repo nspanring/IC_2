@@ -34,25 +34,46 @@ class TrafficManager extends CityManager{
 			}
 		}
 
+		this.checkCrossing(grid_x, grid_y, 1);
 		return 1;
 	}
 
 	removeCrossing(grid_x, grid_y){
-			Animation.scene.remove(Animation.grid.grid[grid_x][grid_y].group);
-			var connectedStreets = Animation.grid.grid[grid_x][grid_y].connections;
-			this.network['Crossing'][Animation.grid.grid[grid_x][grid_y].ID] = undefined
-			Animation.grid.removeFromGrid(grid_x,grid_y)
+		Animation.scene.remove(Animation.grid.grid[grid_x][grid_y].group);
+		var connectedStreets = Animation.grid.grid[grid_x][grid_y].connections;
+		this.network['Crossing'][Animation.grid.grid[grid_x][grid_y].ID] = undefined
+		Animation.grid.removeFromGrid(grid_x,grid_y)
 
-			for (var i = 0; i < connectedStreets.length; i++) {
-				if(connectedStreets[i] !== undefined)
-				this.removeStreet(connectedStreets[i]);
-			}
+		for (var i = 0; i < connectedStreets.length; i++) {
+			if(connectedStreets[i] !== undefined)
+			this.removeStreet(connectedStreets[i]);
+		}
+		this.checkCrossing(grid_x, grid_y, 1);
+		return 1;
 	}
 
 	checkCrossing(grid_x, grid_y, update = 0){
-		counter = this.countNeighbours(grid_x, grid_y, 1); // get direct Neighbours
-    if(counter['Crossing'] > 3) // Crossing trouns to Building
-    console.log(Animation.grid.grid[grid_x][grid_y], '->', 'Building');
+		var neighbors = this.getNeighbours(grid_x, grid_y, 1);
+
+		if(update == 1){ // trigger to let the objects around also check their surroundings
+			for (var i = 0; i < neighbors.length; i++) {
+				if(Animation.grid.grid[grid_x][grid_y] !== undefined){
+					if(Animation.grid.grid[grid_x][grid_y].constructor.name == 'Building')
+					BuildingManager.checkBuilding(neighbors[i].grid_x, neighbors[i].grid_y); // without update flag
+
+					if(Animation.grid.grid[grid_x][grid_y].constructor.name == 'Crossing')
+					this.checkCrossing(neighbors[i].grid_x, neighbors[i].grid_y);
+					//if(Animation.grid.grid[grid_x][grid_y].constructor.name == 'Street')
+					//TrafficManager.checkCrossing(neighbors[i].grid_x, neighbors[i].grid_y);
+				}
+			}
+		}
+		var counter = this.countNeighbours(grid_x, grid_y, 1); // get direct Neighbours
+		if(counter['Crossing'] > 3){
+			this.removeCrossing(grid_x, grid_y);
+			BuildingManager.addBuilding(grid_x, grid_y);
+		}
+		return 1;
 	}
 
 	addStreet(grid_x, grid_y, lane = 1){
@@ -89,8 +110,8 @@ class TrafficManager extends CityManager{
 
 	checkStreet(grid_x, grid_y, update = 0){
 		counter = this.countNeighbours(grid_x, grid_y, 1); // get direct Neighbours
-    if(counter['Street'] > 4) // Crossing trouns to Building
-    console.log(Animation.grid.grid[grid_x][grid_y], '->', 'Building');
+		if(counter['Street'] > 4) // Crossing trouns to Building
+		console.log(Animation.grid.grid[grid_x][grid_y], '->', 'Building');
 	}
 
 	test(){
