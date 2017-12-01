@@ -51,7 +51,7 @@ class CityManager {
     return neighbors;
   }
 
-  getNeighbours(grid_x, grid_y, mode = 0){
+  getNeighbours(grid_x, grid_y, mode = 0, callback = undefined){
     var neighbors = [];
     for (var x = -1; x <= 1; x++) { // left right scan
       for (var y = -1; y <= 1; y++) { // up down scan
@@ -63,6 +63,10 @@ class CityManager {
       }
     }
 
+    if(callback !== undefined){
+      log(NOTE, "getNeighbours | callback")
+      callback(neighbors); // this will "return" the value to the original caller
+    }
     return neighbors;
   }
 
@@ -70,15 +74,17 @@ class CityManager {
   // return new state
   countNeighbours(grid_x, grid_y, mode = 0){
     var counter = [];
-    var neighbors = this.getNeighbours(grid_x, grid_y, mode);
-    // count all neighbors obj and save them with ther class name (like: Buildin, Crossing, Street)
-    for (var i = 0; i < neighbors.length; i++) {
-      var name = String(neighbors[i].constructor.name);
-      if(counter[name] == undefined) counter[name] = 0;
-      counter[name]++;
-    }
-
-    return counter;
+    return this.getNeighbours(grid_x, grid_y, mode, function(neighbors) {
+      // use the return value here instead of like a regular (non-evented) return value
+      // count all neighbors obj and save them with ther class name (like: Buildin, Crossing, Street)
+      for (var i = 0; i < neighbors.length; i++) {
+        var name = String(neighbors[i].constructor.name);
+        if(counter[name] == undefined) counter[name] = 0;
+        counter[name]++;
+        log(NOTE, "countNeighbours | "+grid_x+" | "+grid_y+" | "+name+" | "+counter[name])
+      }
+      return counter;
+    });
   }
 }
 exports.CityManager = CityManager

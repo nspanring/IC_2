@@ -53,21 +53,24 @@ class TrafficManager extends CityManager{
 	}
 
 	checkCrossing(grid_x, grid_y, update = 0){
-		var neighbors = this.getNeighbours(grid_x, grid_y, 1);
+		//var neighbors = this.getNeighbours(grid_x, grid_y, 1);
+		/*
+		if(update == 1){
+			this.getNeighbours(grid_x, grid_y, 1, function(neighbors) {
+				for (var i = 0; i < neighbors.length; i++) {
+					if(Animation.grid.grid[grid_x][grid_y] !== undefined){
+						if(Animation.grid.grid[grid_x][grid_y].constructor.name == 'Building')
+						BuildingManager.checkBuilding(neighbors[i].grid_x, neighbors[i].grid_y); // without update flag
 
-		if(update == 1){ // trigger to let the objects around also check their surroundings
-			for (var i = 0; i < neighbors.length; i++) {
-				if(Animation.grid.grid[grid_x][grid_y] !== undefined){
-					if(Animation.grid.grid[grid_x][grid_y].constructor.name == 'Building')
-					BuildingManager.checkBuilding(neighbors[i].grid_x, neighbors[i].grid_y); // without update flag
-
-					if(Animation.grid.grid[grid_x][grid_y].constructor.name == 'Crossing')
-					this.checkCrossing(neighbors[i].grid_x, neighbors[i].grid_y);
-					//if(Animation.grid.grid[grid_x][grid_y].constructor.name == 'Street')
-					//TrafficManager.checkCrossing(neighbors[i].grid_x, neighbors[i].grid_y);
+						if(Animation.grid.grid[grid_x][grid_y].constructor.name == 'Crossing')
+						this.checkCrossing(neighbors[i].grid_x, neighbors[i].grid_y);
+						//if(Animation.grid.grid[grid_x][grid_y].constructor.name == 'Street')
+						//TrafficManager.checkCrossing(neighbors[i].grid_x, neighbors[i].grid_y);
+					}
 				}
-			}
+			});
 		}
+		*/
 		var counter = this.countNeighbours(grid_x, grid_y, 1); // get direct Neighbours
 		if(counter['Crossing'] > 3){
 			this.removeCrossing(grid_x, grid_y);
