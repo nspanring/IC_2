@@ -8,7 +8,7 @@ class CityManager {
   }
 
   // mode 1: do not add own position
-  scanNeighbours(grid_x, grid_y, max_distance = 15, mode=0){
+  scanNeighbours(grid_x, grid_y, max_distance = 15, mode=0, callback = undefined){
     var neighbors = [];
 
     if(Animation.grid.grid[grid_x] !== undefined)
@@ -19,33 +19,38 @@ class CityManager {
       neighbors[4] = Animation.grid.grid[grid_x][grid_y];
     }
 
-    for (var y = -1; y > grid_y - max_distance; y--) { // north
+    for (var i = 1; i < max_distance; i++) { // north
       if(Animation.grid.grid[grid_x] !== undefined)
-      if(Animation.grid.grid[grid_x][grid_y + y] !== undefined){
-        neighbors[1] = Animation.grid.grid[grid_x][grid_y + y];
+      if(Animation.grid.grid[grid_x][grid_y - i] !== undefined){
+        neighbors[1] = Animation.grid.grid[grid_x][grid_y - i];
         break;
       }
     }
-    for (var x = 1; x < grid_x + max_distance; x++) { // east
-      if(Animation.grid.grid[grid_x + x] !== undefined)
-      if(Animation.grid.grid[grid_x + x][grid_y] !== undefined){
-        neighbors[2] = Animation.grid.grid[grid_x + x][grid_y];
+    for (var i = 1; i < max_distance; i++) { // east
+      if(Animation.grid.grid[grid_x + i] !== undefined)
+      if(Animation.grid.grid[grid_x + i][grid_y] !== undefined){
+        neighbors[2] = Animation.grid.grid[grid_x + i][grid_y];
         break;
       }
     }
-    for (var y = 1; y < grid_y + max_distance; y++) { // south
+    for (var i = 1; i < max_distance; i++) { // south
       if(Animation.grid.grid[grid_x] !== undefined)
-      if(Animation.grid.grid[grid_x][grid_y + y] !== undefined){
-        neighbors[3] = Animation.grid.grid[grid_x][grid_y + y];
+      if(Animation.grid.grid[grid_x][grid_y + i] !== undefined){
+        neighbors[3] = Animation.grid.grid[grid_x][grid_y + i];
         break;
       }
     }
-    for (var x = -1; x > grid_x - max_distance; x--) { // west
-      if(Animation.grid.grid[grid_x + x] !== undefined)
-      if(Animation.grid.grid[grid_x + x][grid_y] !== undefined){
-        neighbors[4] = Animation.grid.grid[grid_x + x][grid_y];
+    for (var i = 1; i < max_distance; i++) { // west
+      if(Animation.grid.grid[grid_x - i] !== undefined)
+      if(Animation.grid.grid[grid_x - i][grid_y] !== undefined){
+        neighbors[4] = Animation.grid.grid[grid_x - i][grid_y];
         break;
       }
+    }
+
+    if(callback !== undefined){
+      log(NOTE, "getNeighbours | callback")
+      callback(neighbors); // this will "return" the value to the original caller
     }
 
     return neighbors;
@@ -74,14 +79,16 @@ class CityManager {
   // return new state
   countNeighbours(grid_x, grid_y, mode = 0){
     var counter = [];
-    return this.getNeighbours(grid_x, grid_y, mode, function(neighbors) {
+    return this.scanNeighbours(grid_x, grid_y, 2, mode, function(neighbors) {
       // use the return value here instead of like a regular (non-evented) return value
       // count all neighbors obj and save them with ther class name (like: Buildin, Crossing, Street)
       for (var i = 0; i < neighbors.length; i++) {
-        var name = String(neighbors[i].constructor.name);
-        if(counter[name] == undefined) counter[name] = 0;
-        counter[name]++;
-        log(NOTE, "countNeighbours | "+grid_x+" | "+grid_y+" | "+name+" | "+counter[name])
+        if(neighbors[i] !== undefined){
+          var name = String(neighbors[i].constructor.name);
+          if(counter[name] == undefined) counter[name] = 0;
+          counter[name]++;
+          log(NOTE, "countNeighbours | "+grid_x+" | "+grid_y+" | "+name+" | "+counter[name])
+        }
       }
       return counter;
     });
