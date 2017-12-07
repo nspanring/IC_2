@@ -44,12 +44,13 @@ class BuildingManager extends CityManager{
           //TrafficManager.checkCrossing(neighbors[i].grid_x, neighbors[i].grid_y);
         }
       }
-    }
-    var counter = this.countNeighbours(grid_x, grid_y, 1); // get direct Neighbours
-    if(counter['Building'] > 3){
-
-      this.removeBuilding(grid_x, grid_y);
-      TrafficManager.addCrossing(grid_x, grid_y);
+    }else{
+      this.countNeighbours(grid_x, grid_y, 1, this, function(tmpthis, counter){
+        if(counter['Building'] >= 3){
+          tmpthis.removeBuilding(grid_x, grid_y);
+          TrafficManager.addCrossing(grid_x, grid_y);
+        }
+      }); // get direct Neighbours
     }
   }
 

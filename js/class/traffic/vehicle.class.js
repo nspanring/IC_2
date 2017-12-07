@@ -22,8 +22,26 @@ class Vehicle extends Entity{
 	drive(x,y){
 		if(this.waiting == 1) return 0; // Vehicle can't drive if it is waiting
 
-		if(this.queue.length == 0) this.queue = this.findShortestPath(x,y);
+		if(this.queue.length == 0){
+			this.findShortestPath(x,y, this, function(tmpthis, queue){
+				tmpthis.queue = queue;
+				return tmpthis.drive_queue()
+			});
+		}else{ // queue ist allready calculated
+			if(this.queue === false){
+				this.queue = []; // Path blocked so we need a new path (clear queue)
+				return false;
+			}
+			if(this.drive_queue() == false){
+				this.queue = []; // Path blocked so we need a new path (clear queue)
+				return false; // if every check failed
+			}else{
+				return true;
+			}
+		}
+	}
 
+	drive_queue(){
 		var grid_x = this.grid_x;
 		var grid_y = this.grid_y;
 		this.direction = this.queue[0];
@@ -68,9 +86,7 @@ class Vehicle extends Entity{
 		if(this.next_obj.constructor.name == "Building") return this.useBuilding();
 		if(this.next_obj.constructor.name == "Crossing") return this.useCrossing(this);
 		if(this.next_obj.constructor.name == "Street") return this.useStreet();
-
-		this.queue = []; // Path blocked so we need a new path (clear queue)
-		return 0; // if every check failed
+		return false; // if no valid path!
 	}
 
 	// TODO: Parking on/in Buildings!
@@ -111,10 +127,12 @@ class Vehicle extends Entity{
 		this.scan.position.set(grid_x, 0, grid_y);
 	}
 */
+
 	// Start location will be in the following format:
 	// [x, y]
-	findShortestPath(x2,y2){
+	findShortestPath(x2,y2, tmpthis, callback = undefined){
 		var grid = Animation.grid.getGridArray(); // Animation class -> Grid Class -> grid array
+		if(grid[x2] == undefined){  callback(tmpthis, false); return false; }
 		grid[x2][y2] = "Goal";
 		var x = this.grid_x;
 		var y = this.grid_y;
@@ -140,6 +158,7 @@ class Vehicle extends Entity{
 				// Explore North
 				var newLocation = this.exploreInDirection(currentLocation, i, grid);
 				if (newLocation.status === 'Goal') {
+					if(callback != undefined) callback(tmpthis, newLocation.path);
 					return newLocation.path;
 				} else if (newLocation.status === 'Valid') {
 					queue.push(newLocation);
@@ -148,6 +167,7 @@ class Vehicle extends Entity{
 		}
 
 		// No valid path found
+		if(callback != undefined) callback(tmpthis, false);
 		return false;
 	}
 
