@@ -5,6 +5,7 @@ class Grid {
   constructor(gridsize = 100) {
     this.gridsize = gridsize;
     this.grid = [];
+    this.points = [];
     this.value = [];
   }
 
@@ -28,36 +29,53 @@ class Grid {
     return this.addValue(x,y,value);
   }
 
+  addPoint(x,y,value){
+    if(this.points[x] == undefined) this.points[x] = [];
+    this.points[x][y] = value;
+    return this.points[x][y];
+  }
+
   // create a random Value gird
-  createRandValueGrid(max_dot, val = 4, size = this.gridsize){
+  createRandValueGrid(max_dot, val = 5, size = this.gridsize){
     var x = 0;
     var y = 0;
     var value = 0;
-    var max_dens = max_dot / val;
-    for (var i = 0; i < size; i++) {
-      x = (Math.floor(Math.random() * max_dot) + 0 );
-      y = (Math.floor(Math.random() * max_dot) + 0 );
-      this.addValue(x,y,val);
+    var size_dobl = size * 2;
+    var size_half = size / 2;
+    for (var i = 0; i < max_dot; i++) {
+      x = (Math.floor(Math.random() * size_dobl) - size_half );
+      y = (Math.floor(Math.random() * size_dobl) - size_half );
+      this.addPoint(x,y,val);
     }
-    return this.getValueArray();
+    return this.points;
   }
-  /*
-  calcValueGrid(){
-    var points = this.getValueArray();
-    for (var x = 0; x < points.length; x++) {
-      if(points[x] !== undefined){
-        for (var y = 0; y < points[x].length; y++) {
 
-          for (var x1 = -1; x1 <= 1; x1++) {
-            for (var y1 = -1; y1 <= 1; y1++) {
-              this.value[x1][y1] = points[x][y] - 1;
+  calcValueGrid(max = 4){
+    for (var x = 0; x < this.points.length; x++) {
+      if(this.points[x] !== undefined){
+        for (var y = 0; y < this.points[x].length; y++) {
+          if(this.points[x][y] !== undefined){
+            this.addValue(x, y, this.points[x][y]); // add point as value
+
+            /*
+            for (var x1 = -1; x1 <= 1; x1++) { for (var y1 = -1; y1 <= 1; y1++) {
+              if(x1 !== 0 && y1 !== 0) this.addValue(x + x1,y + y1,this.points[x][y] - 1) // first circle
+            } }
+            */
+            var i_c = 1;
+            for (var i = max; i > 0; i--) {
+              for (var x1 = -i_c; x1 <= i_c; x1++) { for (var y1 = -i_c; y1 <= i_c; y1++) {
+                if((~(x1)+1) > i_c || (~(y1)+1) > i_c )
+                this.addValue(x + x1,y + y1, i)
+              } }
+              i_c++;
             }
           }
         }
       }
     }
   }
-*/
+
   getGridArray(){
     return $.extend(true, [], this.grid);;
   }
