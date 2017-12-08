@@ -133,9 +133,40 @@ class Animation {
     return ctx;
   }
 
+  addPlane(group,x,y,width,height,color=0xffff00){
+    var geometry = new THREE.PlaneGeometry( width, height );
+    var material = new THREE.MeshBasicMaterial( {color: color, side: THREE.DoubleSide} );
+    var plane = new THREE.Mesh( geometry, material );
+    plane.rotateX(Math.PI / 2)
+    plane.position.x = x;
+    plane.position.z = y;
+    group.add(plane)
+  }
+
   showGrid(size = 1000){
     var gridHelper = new THREE.GridHelper( this.grid.gridsize * size, size, 0x0000ff );
     this.scene.add( gridHelper );
+  }
+
+  showValue(size = this.grid.gridsize){
+    var size_half = size / 2;
+
+    if(this.grid.value !== undefined){
+      var value_group = this.addGroup()
+      var coord = [];
+      var v = 0;
+      var color = 0x000000;
+      for (var x = -size_half; x < size_half; x++) {
+        for (var y = -size_half; y < size_half; y++) {
+          if(this.grid.value[x] !== undefined) if(this.grid.value[x][y] !== undefined){
+            coord = this.grid.getCoordinates(x, y);
+            v = this.grid.value[x][y];
+            color = parseInt('0x'+v+''+v+''+v+''+v+''+v+''+v);
+            this.addPlane(value_group,coord[0],coord[1],100,100,color);
+          }
+        }
+      }
+    }
   }
 }
 exports.Animation = new Animation()

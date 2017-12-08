@@ -35,6 +35,45 @@ class Grid {
     return this.points[x][y];
   }
 
+  calcValueGrid(max = 4, size = this.gridsize){
+    var size_half = size / 2;
+    for (var x = -size_half; x < size_half; x++) {
+      if(this.points[x] !== undefined){
+        for (var y = -size_half; y < size_half; y++) {
+          if(this.points[x][y] !== undefined){
+            var value = 0;
+            if(this.value[x] !== undefined)if(this.value[x][y] !== undefined){
+              if(this.value[x][y]+this.points[x][y] < 10) value = this.value[x][y]+this.points[x][y]; else value = 9;
+              this.addValue(x, y, value); // add point as value
+            }else{
+              this.addValue(x, y, this.points[x][y]); // add point as value
+
+            }
+
+            /*
+            for (var x1 = -1; x1 <= 1; x1++) { for (var y1 = -1; y1 <= 1; y1++) {
+              if(x1 !== 0 && y1 !== 0) this.addValue(x + x1,y + y1,this.points[x][y] - 1) // first circle
+            } }
+            */
+            value = 0;
+            var i_c = 1;
+            for (var i = max; i > 0; i--) {
+              for (var x1 = -i_c; x1 <= i_c; x1++) { for (var y1 = -i_c; y1 <= i_c; y1++) {
+                if( ( (~(x1)+1) >= i_c || (~(y1)+1) >= i_c ) || ( x1 >= i_c || y1 >= i_c )){
+                  if(this.value[x + x1] !== undefined)if(this.value[x + x1][y + y1] !== undefined) value = this.value[x + x1][y + y1];
+                  if(value+i < 10) value = value + i; else value = 9;
+                  this.addValue(x + x1,y + y1, value)
+                  value = 0
+                }
+              } }
+              i_c++;
+            }
+          }
+        }
+      }
+    }
+  }
+
   // create a random Value gird
   createRandValueGrid(max_dot, val = 5, size = this.gridsize){
     var x = 0;
@@ -43,37 +82,13 @@ class Grid {
     var size_dobl = size * 2;
     var size_half = size / 2;
     for (var i = 0; i < max_dot; i++) {
-      x = (Math.floor(Math.random() * size_dobl) - size_half );
-      y = (Math.floor(Math.random() * size_dobl) - size_half );
+      x = (Math.floor(Math.random() * size) - size_half );
+      y = (Math.floor(Math.random() * size) - size_half );
       this.addPoint(x,y,val);
     }
+    this.calcValueGrid();
+    Animation.showValue()
     return this.points;
-  }
-
-  calcValueGrid(max = 4){
-    for (var x = 0; x < this.points.length; x++) {
-      if(this.points[x] !== undefined){
-        for (var y = 0; y < this.points[x].length; y++) {
-          if(this.points[x][y] !== undefined){
-            this.addValue(x, y, this.points[x][y]); // add point as value
-
-            /*
-            for (var x1 = -1; x1 <= 1; x1++) { for (var y1 = -1; y1 <= 1; y1++) {
-              if(x1 !== 0 && y1 !== 0) this.addValue(x + x1,y + y1,this.points[x][y] - 1) // first circle
-            } }
-            */
-            var i_c = 1;
-            for (var i = max; i > 0; i--) {
-              for (var x1 = -i_c; x1 <= i_c; x1++) { for (var y1 = -i_c; y1 <= i_c; y1++) {
-                if((~(x1)+1) > i_c || (~(y1)+1) > i_c )
-                this.addValue(x + x1,y + y1, i)
-              } }
-              i_c++;
-            }
-          }
-        }
-      }
-    }
   }
 
   getGridArray(){
