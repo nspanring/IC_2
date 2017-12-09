@@ -35,7 +35,7 @@ class Grid {
     return this.points[x][y];
   }
 
-  calcValueGrid(max = 4, size = this.gridsize){
+  calcValueGrid(max = 5, size = this.gridsize){
     var size_half = size / 2;
     for (var x = -size_half; x < size_half; x++) {
       if(this.points[x] !== undefined){
@@ -75,7 +75,7 @@ class Grid {
   }
 
   // create a random Value gird
-  createRandValueGrid(max_dot, val = 5, size = this.gridsize){
+  createRandValueGrid(max_dot, val = 6, size = this.gridsize){
     var x = 0;
     var y = 0;
     var value = 0;
