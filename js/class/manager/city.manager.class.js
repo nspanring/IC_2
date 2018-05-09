@@ -6,7 +6,7 @@ class CityManager {
 
     this.network = []; // all Traffic obj will be stored there exept vehicles
 
-    //build grid:
+    //build grid value to simulate the worth of a grid place:
     Animation.grid.createRandValueGrid(50);
   }
 
