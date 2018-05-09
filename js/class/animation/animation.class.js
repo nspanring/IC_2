@@ -54,6 +54,21 @@ class Animation {
     return newgroup;
   }
 
+  addPoint(group,x=0,y=0,z=0,size=1,color=0xff0000, opacity=1){
+
+				var positions = new Float32Array( 1 * 3 );
+				var colors = new Float32Array( 1 * 3 );
+				var sizes = new Float32Array( 10 );
+    				var geometry = new THREE.BufferGeometry();
+    				geometry.addAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
+    				geometry.addAttribute( 'customColor', new THREE.BufferAttribute( colors, 3 ) );
+    				geometry.addAttribute( 'size', new THREE.BufferAttribute( sizes, 100 ) );
+          var material =  new THREE.PointsMaterial( { color: 0xff0000 } );
+          var particles = new THREE.Points( geometry, material );
+    group.add( particles );
+    return group;
+  }
+
   addMeshBox(group,x,y,z,width,depth,height,color=0xffffff, opacity=0.7){
     var geometry = new THREE.BoxBufferGeometry( width, height, depth );
     var wireframe = new THREE.EdgesGeometry( geometry );

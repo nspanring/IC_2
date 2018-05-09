@@ -1,6 +1,6 @@
 const { Work } = require('./human.work.class.js');
 class Human extends Entity {
-  constructor(){
+  constructor(grid_x=0,grid_y=0){
     super() // call constructor of Entity
     this.age = 0; // multiplikator for health loss
     this.kcal = 3000; // % when > 1000 sleeps refreshs energy
@@ -9,6 +9,8 @@ class Human extends Entity {
     this.health = 100 // %
     this.money = 0 // used to buy food
     this.food = 0; // kcal durch. 3000
+
+    //Other Details:
     // gender 1:woman, 2:man
     this.sex = getNumber(
       [
@@ -90,6 +92,18 @@ class Human extends Entity {
       case 9: this.sozialLayer = 3; this.baseOrientaion = 2; break;
       case 10: this.sozialLayer = 3; this.baseOrientaion = 3; break;
     }
+
+    /*
+    //Position obj and visio
+    var position_xy = Animation.grid.getPosition(grid_x+','+grid_y);
+		this.group = Animation.addGroup()
+		//this.scan = Animation.addGroup()
+		this.group.position.set(position_xy[0], 0, position_xy[1])
+		//this.scan.position.set(position_xy[0], 0, position_xy[1])
+    Animation.addPoint(this.group,position_xy[0],position_xy[1],0,100)
+		//Animation.addMeshBox(this.scan,position_xy[0] + (Animation.grid.gridsize/2),10,position_xy[1] + (Animation.grid.gridsize/2),10,10,10,0x0000ff)
+		this.last_obj = Animation.grid.grid[grid_x][grid_y];
+    */
   }
 
   /**

@@ -20,6 +20,7 @@ var seed = "5345345"
 
 // Require all classes and data files
 require('./js/lib/seedrandom.min.js');
+Math.random = new Math.seedrandom(seed) // start random seed Math.random()
 require('./js/lib/functions.lib.js')(); // the "()" activates the functions in the library and puts them into the global functions
 const syllables = require('./data/syllables.json')
 
@@ -28,10 +29,11 @@ const THREE = require('three')
 const OrbitControls = require('three-orbit-controls')(THREE)
 
 const { Entity } = require('./js/class/entity.class.js');
+var Animation = require('./js/class/animation/animation.class.js').Animation
+
 const { CityManager } = require('./js/class/manager/city.manager.class.js');
 
 // Directly init this Classes Global!
-var Animation = require('./js/class/animation/animation.class.js').Animation
 var TrafficManager = require('./js/class/manager/traffic.manager.class.js').TrafficManager
 var BuildingManager = require('./js/class/manager/building.manager.class.js').BuildingManager
 
@@ -47,8 +49,6 @@ $( document ).ready(function() {
   log(NOTE, "Node: "+process.versions.node )
   log(NOTE, "Chrome: "+process.versions.chrome )
   log(NOTE, "Electron: "+process.versions.electron )
-
-  Math.random = new Math.seedrandom(seed) // start random seed Math.random()
 
   // test
   const { Human } = require('./js/class/human/human.class.js')

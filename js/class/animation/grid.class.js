@@ -75,7 +75,7 @@ class Grid {
   }
 
   // create a random Value gird
-  createRandValueGrid(max_dot, val = 6, size = this.gridsize){
+  createRandValueGrid(max_dot, val = 6, size = this.gridsize, show=false){
     var x = 0;
     var y = 0;
     var value = 0;
@@ -87,7 +87,7 @@ class Grid {
       this.addPoint(x,y,val);
     }
     this.calcValueGrid();
-    Animation.showValue()
+    if(show) Animation.showValue()
     return this.points;
   }
 

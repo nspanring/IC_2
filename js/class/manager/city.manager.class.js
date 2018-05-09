@@ -5,6 +5,9 @@ class CityManager {
   constructor() {
 
     this.network = []; // all Traffic obj will be stored there exept vehicles
+
+    //build grid:
+    Animation.grid.createRandValueGrid(50);
   }
 
   // mode 1: do not add own position
